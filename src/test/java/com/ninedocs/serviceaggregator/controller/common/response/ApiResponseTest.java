@@ -1,17 +1,16 @@
 package com.ninedocs.serviceaggregator.controller.common.response;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CommonResponseTest {
+class ApiResponseTest {
 
   @DisplayName("body가 없는 성공 응답")
   @Test
   void success() {
-    CommonResponse<Void> result = CommonResponse.success();
+    ApiResponse<Void> result = ApiResponse.success();
 
     assertThat(result.isSuccess()).isTrue();
     assertThat(result.getErrorCode()).isNull();
@@ -21,7 +20,7 @@ class CommonResponseTest {
   @DisplayName("body가 있는 성공 응답")
   @Test
   void successWithBody() {
-    CommonResponse<String> result = CommonResponse.success("data");
+    ApiResponse<String> result = ApiResponse.success("data");
 
     assertThat(result.isSuccess()).isTrue();
     assertThat(result.getErrorCode()).isNull();
@@ -31,7 +30,7 @@ class CommonResponseTest {
   @DisplayName("커스텀 에러 응답")
   @Test
   void error() {
-    CommonResponse<Void> result = CommonResponse.error("TEST_ERROR_CODE");
+    ApiResponse<Void> result = ApiResponse.error("TEST_ERROR_CODE");
 
     assertThat(result.isSuccess()).isFalse();
     assertThat(result.getErrorCode()).isEqualTo("TEST_ERROR_CODE");

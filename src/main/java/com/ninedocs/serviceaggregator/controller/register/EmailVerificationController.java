@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.controller.register;
 
-import com.ninedocs.serviceaggregator.controller.common.response.CommonResponse;
+import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.register.exception.EmailDuplicateException;
 import com.ninedocs.serviceaggregator.controller.register.request.VerificationCodeCreateRequest;
 import com.ninedocs.serviceaggregator.controller.register.response.VerificationCodeCreateResponse;
@@ -20,13 +20,13 @@ public class EmailVerificationController {
 
   @Operation(summary = "이메일 인증 코드 발송")
   @PostMapping("/api/v1/register/email-verification-code")
-  public Mono<ResponseEntity<CommonResponse<VerificationCodeCreateResponse>>> sendEmailVerificationCode(
+  public Mono<ResponseEntity<ApiResponse<VerificationCodeCreateResponse>>> sendEmailVerificationCode(
       @RequestBody @Valid VerificationCodeCreateRequest request
   ) {
     if (request.getEmail().equals("duplicate@email.com")) {
       throw new EmailDuplicateException("EMAIL_DUPLICATED");
     }
-    return Mono.just(ResponseEntity.ok(CommonResponse.success(
+    return Mono.just(ResponseEntity.ok(ApiResponse.success(
         VerificationCodeCreateResponse.builder()
             .verificationCodeExpiredAt(LocalDateTime.now().plusMinutes(5))
             .build()
