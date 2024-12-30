@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.kernel.controller;
+package com.ninedocs.serviceaggregator.controller.common;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
