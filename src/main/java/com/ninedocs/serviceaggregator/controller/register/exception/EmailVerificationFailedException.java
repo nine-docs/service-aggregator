@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public final class EmailDuplicateException extends CustomException {
+public class EmailVerificationFailedException extends CustomException {
 
   private final String errorCode;
 }

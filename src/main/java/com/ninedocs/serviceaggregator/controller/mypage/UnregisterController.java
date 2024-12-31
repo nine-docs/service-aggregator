@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -12,10 +13,11 @@ import reactor.core.publisher.Mono;
 @RestController
 public class UnregisterController {
 
-  // Todo Authentication Request Header
-  @Operation(summary = "회원 탈퇴")
+  @Operation(summary = "회원 탈퇴 Mock")
   @PostMapping("/api/v1/my-page/unregister")
-  public Mono<ResponseEntity<ApiResponse<Void>>> unregister() {
+  public Mono<ResponseEntity<ApiResponse<Void>>> unregister(
+      @RequestHeader("Authentication") String authToken
+  ) {
     return Mono.just(ResponseEntity.ok(ApiResponse.success()));
   }
 }
