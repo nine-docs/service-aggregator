@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "이메일 인증")
+@Tag(name = "회원가입")
 @RestController
 @RequestMapping("/api/v1/register")
 public class EmailVerificationController {
@@ -29,7 +29,7 @@ public class EmailVerificationController {
       @RequestBody @Valid VerificationCodeCreateRequest request
   ) {
     if (request.getEmail().equals("duplicate@email.com")) {
-      throw new EmailDuplicateException("EMAIL_DUPLICATED");
+      throw new EmailDuplicateException();
     }
     return Mono.just(ResponseEntity.ok(ApiResponse.success(
         VerificationCodeCreateResponse.builder()
@@ -44,7 +44,7 @@ public class EmailVerificationController {
       @RequestBody @Valid EmailVerifyRequest request
   ) {
     if (request.getEmail().equals("fail@email.com")) {
-      throw new EmailVerificationFailedException("VERIFICATION_FAILED");
+      throw new EmailVerificationFailedException();
     }
     return Mono.just(ResponseEntity.ok(ApiResponse.success(
         EmailVerifiedResponse.builder()
