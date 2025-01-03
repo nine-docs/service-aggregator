@@ -29,9 +29,17 @@ public class OpenApiConfig {
   }
 
   @Bean
+  public GroupedOpenApi loginGroupedOpenApi() {
+    return GroupedOpenApi.builder()
+        .group("(b) 로그인")
+        .pathsToMatch("/api/v1/login/**")
+        .build();
+  }
+
+  @Bean
   public GroupedOpenApi myPageGroupedOpenApi() {
     return GroupedOpenApi.builder()
-        .group("(b) 마이페이지")
+        .group("(c) 마이페이지")
         .pathsToMatch("/api/v1/my-page/**")
         .build();
   }

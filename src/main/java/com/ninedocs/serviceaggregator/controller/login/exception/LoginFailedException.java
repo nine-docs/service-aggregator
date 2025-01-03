@@ -1,13 +1,13 @@
-package com.ninedocs.serviceaggregator.controller.register.exception;
+package com.ninedocs.serviceaggregator.controller.login.exception;
 
 import com.ninedocs.serviceaggregator.controller.common.exception.CustomException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-public final class EmailDuplicateException extends CustomException {
+public class LoginFailedException extends CustomException {
 
   @Override
   public String getErrorCode() {
-    return "EMAIL_DUPLICATED";
+    return "LOGIN_FAILED";
   }
 }
