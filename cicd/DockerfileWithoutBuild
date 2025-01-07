@@ -1,0 +1,7 @@
+FROM amazoncorretto:17.0.13-alpine3.20
+
+COPY *.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
