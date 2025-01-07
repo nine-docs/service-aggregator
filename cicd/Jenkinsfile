@@ -4,6 +4,9 @@ pipeline {
         DOCKER_HUB_IMAGE_REPO =  "ninedocs-service-aggregator"
         TAG = "${env.BUILD_ID}"
     }
+    options {
+        disableConcurrentBuilds() // 동시에 빌드 실행 방지
+    }
     stages {
         stage("Permission") {
             steps {
