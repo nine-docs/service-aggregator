@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HUB_IMAGE_REPO =  "ninedocs-service-aggregator"
+        TAG = "${env.BUILD_ID}"
+    }
     stages {
         stage("Permission") {
             steps {
@@ -42,7 +46,7 @@ pipeline {
         }
         stage("Docker Build") {
             steps {
-                sh "docker build -t ninedocs-service-aggregator -f cicd/DockerfileWithoutBuild build/libs"
+                sh "docker build -t $DOCKER_HUB_IMAGE_REPO -f cicd/DockerfileWithoutBuild build/libs"
             }
             post {
                 success {
@@ -50,6 +54,25 @@ pipeline {
                 }
                 failure {
                     sh 'echo "# docker build failure"'
+                }
+            }
+        }
+        stage("Push Image") {
+            environment {
+                DOCKER_HUB_CREDENTIAL = credentials('yerim_dockerhub')
+            }
+            steps {
+                sh "echo $DOCKER_HUB_CREDENTIAL_PSW | docker login -u $DOCKER_HUB_CREDENTIAL_USR --password-stdin"
+                sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker logout"
+            }
+            post {
+                success {
+                    sh 'echo "# image push success"'
+                }
+                failure {
+                    sh 'echo "# image push failure"'
                 }
             }
         }
