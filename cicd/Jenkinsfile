@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    stages {
+        stage("Permission") {
+            steps {
+                sh "chmod +x ./gradlew"
+            }
+            post {
+                success {
+                    sh 'echo "# chmod success"'
+                }
+                failure {
+                    sh 'echo "# chmod failure"'
+                }
+            }
+        }
+        stage("Gradle Test") {
+            steps {
+                sh "./gradlew test"
+            }
+            post {
+                success {
+                    sh 'echo "# gradlew test success"'
+                }
+                failure {
+                    sh 'echo "# gradlew test failure"'
+                }
+            }
+        }
+        stage("Gradle Build") {
+            steps {
+                sh "./gradlew clean build"
+            }
+            post {
+                success {
+                    sh 'echo "# gradlew build success"'
+                }
+                failure {
+                    sh 'echo "# gradlew build failure"'
+                }
+            }
+        }
+        stage("Docker Build") {
+            steps {
+                sh "docker build -t ninedocs-service-aggregator -f cicd/DockerfileWithoutBuild build/libs"
+            }
+            post {
+                success {
+                    sh 'echo "# docker build success"'
+                }
+                failure {
+                    sh 'echo "# docker build failure"'
+                }
+            }
+        }
+    }
+}
