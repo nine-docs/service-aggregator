@@ -5,6 +5,7 @@ import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVer
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.register.emailverification.dto.EmailVerifiedResponse;
 import com.ninedocs.serviceaggregator.controller.register.emailverification.dto.EmailVerifyRequest;
+import com.ninedocs.serviceaggregator.controller.register.emailverification.exception.EmailVerificationFailedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,12 +34,15 @@ public class EmailVerificationController {
                 .emailVerificationCode(request.getEmailVerificationCode())
                 .build()
         )
-        .map(domainResponse -> ResponseEntity.ok(ApiResponse.success(
-            EmailVerifiedResponse.builder()
-                .verificationExpiredAt(
-                    domainResponse.getData().getVerificationExpiredAt()
-                )
-                .build()
-        )));
+        .flatMap(domainResponse -> {
+          if ("VERIFICATION_FAILED".equals(domainResponse.getErrorCode())) {
+            return Mono.error(new EmailVerificationFailedException());
+          }
+          return Mono.just(domainResponse);
+        })
+        .map(domainResponse -> ApiResponse.success(EmailVerifiedResponse.builder()
+            .verificationExpiredAt(domainResponse.getData().getVerificationExpiredAt())
+            .build()))
+        .map(ResponseEntity::ok);
   }
 }
