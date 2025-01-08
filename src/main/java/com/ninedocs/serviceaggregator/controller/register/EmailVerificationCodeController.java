@@ -27,10 +27,10 @@ public class EmailVerificationCodeController {
       @RequestBody @Valid VerificationCodeCreateRequest request
   ) {
     return client.sendEmailVerificationCode(request.getEmail())
-        .map(clientResponse -> ResponseEntity.ok(ApiResponse.success(
+        .map(domainResponse -> ResponseEntity.ok(ApiResponse.success(
             VerificationCodeCreateResponse.builder()
                 .verificationCodeExpiredAt(
-                    clientResponse.getData().getVerificationCodeExpiredAt()
+                    domainResponse.getData().getVerificationCodeExpiredAt()
                 )
                 .build()
         )));

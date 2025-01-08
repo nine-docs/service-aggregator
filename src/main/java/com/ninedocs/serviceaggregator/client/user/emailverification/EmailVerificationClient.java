@@ -1,8 +1,8 @@
-package com.ninedocs.serviceaggregator.client.user.emailverificationcode;
+package com.ninedocs.serviceaggregator.client.user.emailverification;
 
 import com.ninedocs.serviceaggregator.client.user.common.dto.DomainResponse;
-import com.ninedocs.serviceaggregator.client.user.emailverificationcode.dto.EmailVerificationCodeRequest;
-import com.ninedocs.serviceaggregator.client.user.emailverificationcode.dto.EmailVerificationCodeResponse;
+import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationRequest;
+import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -12,21 +12,19 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class EmailVerificationCodeClient {
+public class EmailVerificationClient {
 
   private final WebClient userWebClient;
 
-  public Mono<DomainResponse<EmailVerificationCodeResponse>> sendEmailVerificationCode(String email) {
-    EmailVerificationCodeRequest requestBody = EmailVerificationCodeRequest.builder()
-        .email(email)
-        .build();
-
+  public Mono<DomainResponse<EmailVerificationResponse>> verifyEmail(
+      EmailVerificationRequest request
+  ) {
     return userWebClient.post()
         .uri(uriBuilder -> uriBuilder
-            .path("/api/v1/user/email-verification-code")
+            .path("/api/v1/user/email-verification")
             .build())
         .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue(requestBody)
+        .bodyValue(request)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<>() {});
   }
