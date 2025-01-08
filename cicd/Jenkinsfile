@@ -1,0 +1,83 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_HUB_IMAGE_REPO =  "ninedocs-service-aggregator"
+        TAG = "${env.BUILD_ID}"
+    }
+    options {
+        disableConcurrentBuilds() // 동시에 빌드 실행 방지
+    }
+    stages {
+        stage("Permission") {
+            steps {
+                sh "chmod +x ./gradlew"
+            }
+            post {
+                success {
+                    sh 'echo "# chmod success"'
+                }
+                failure {
+                    sh 'echo "# chmod failure"'
+                }
+            }
+        }
+        stage("Gradle Test") {
+            steps {
+                sh "./gradlew test"
+            }
+            post {
+                success {
+                    sh 'echo "# gradlew test success"'
+                }
+                failure {
+                    sh 'echo "# gradlew test failure"'
+                }
+            }
+        }
+        stage("Gradle Build") {
+            steps {
+                sh "./gradlew clean build"
+            }
+            post {
+                success {
+                    sh 'echo "# gradlew build success"'
+                }
+                failure {
+                    sh 'echo "# gradlew build failure"'
+                }
+            }
+        }
+        stage("Docker Build") {
+            steps {
+                sh "docker build -t $DOCKER_HUB_IMAGE_REPO -f cicd/DockerfileWithoutBuild build/libs"
+            }
+            post {
+                success {
+                    sh 'echo "# docker build success"'
+                }
+                failure {
+                    sh 'echo "# docker build failure"'
+                }
+            }
+        }
+        stage("Push Image") {
+            environment {
+                DOCKER_HUB_CREDENTIAL = credentials('yerim_dockerhub')
+            }
+            steps {
+                sh "echo $DOCKER_HUB_CREDENTIAL_PSW | docker login -u $DOCKER_HUB_CREDENTIAL_USR --password-stdin"
+                sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker logout"
+            }
+            post {
+                success {
+                    sh 'echo "# image push success"'
+                }
+                failure {
+                    sh 'echo "# image push failure"'
+                }
+            }
+        }
+    }
+}
