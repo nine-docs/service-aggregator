@@ -20,26 +20,12 @@ import reactor.core.publisher.Mono;
 
 @Tag(name = "회원가입")
 @RestController
-@RequestMapping("/api/v1/register")
+@RequestMapping("")
 public class EmailVerificationController {
 
-  @Operation(summary = "이메일 인증 코드 발송 Mock")
-  @PostMapping("/email-verification-code")
-  public Mono<ResponseEntity<ApiResponse<VerificationCodeCreateResponse>>> sendEmailVerificationCode(
-      @RequestBody @Valid VerificationCodeCreateRequest request
-  ) {
-    if (request.getEmail().equals("duplicate@email.com")) {
-      throw new EmailDuplicateException();
-    }
-    return Mono.just(ResponseEntity.ok(ApiResponse.success(
-        VerificationCodeCreateResponse.builder()
-            .verificationCodeExpiredAt(LocalDateTime.now().plusMinutes(5))
-            .build()
-    )));
-  }
 
   @Operation(summary = "이메일 인증 Mock")
-  @PostMapping("/email-verification")
+  @PostMapping("/api/v1/register/email-verification")
   public Mono<ResponseEntity<ApiResponse<EmailVerifiedResponse>>> verifyEmail(
       @RequestBody @Valid EmailVerifyRequest request
   ) {

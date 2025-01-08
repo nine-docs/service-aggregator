@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.user;
+package com.ninedocs.serviceaggregator.client.user.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
