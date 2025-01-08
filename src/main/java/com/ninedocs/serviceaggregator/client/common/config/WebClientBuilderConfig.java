@@ -1,6 +1,5 @@
-package com.ninedocs.serviceaggregator.config;
+package com.ninedocs.serviceaggregator.client.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
