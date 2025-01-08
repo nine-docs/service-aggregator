@@ -1,8 +1,8 @@
-package com.ninedocs.serviceaggregator.controller.register.exception;
+package com.ninedocs.serviceaggregator.controller.register.emailverificationcode.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+import com.ninedocs.serviceaggregator.controller.register.emailverification.exception.EmailVerificationFailedException;
 import org.junit.jupiter.api.Test;
 
 class EmailVerificationFailedExceptionTest {

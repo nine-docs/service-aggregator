@@ -1,8 +1,8 @@
-package com.ninedocs.serviceaggregator.controller.register;
+package com.ninedocs.serviceaggregator.controller.register.register;
 
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
-import com.ninedocs.serviceaggregator.controller.register.request.RegisterRequest;
-import com.ninedocs.serviceaggregator.controller.register.response.RegisterResponse;
+import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterRequest;
+import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 @RestController
 public class RegisterController {
 
-  @Operation(summary = "회원 가입 (구독)")
+  @Operation(summary = "회원 가입 (구독) Mock")
   @PostMapping
   public Mono<ResponseEntity<ApiResponse<RegisterResponse>>> register(
       @RequestBody @Valid RegisterRequest registerRequest

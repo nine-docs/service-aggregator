@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.register.response;
+package com.ninedocs.serviceaggregator.controller.register.emailverificationcode.dto;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
