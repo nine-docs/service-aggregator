@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.register.exception;
+package com.ninedocs.serviceaggregator.controller.register.emailverification.exception;
 
 import com.ninedocs.serviceaggregator.controller.common.exception.CustomException;
 

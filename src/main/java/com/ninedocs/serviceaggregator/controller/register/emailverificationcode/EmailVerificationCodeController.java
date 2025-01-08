@@ -1,9 +1,9 @@
-package com.ninedocs.serviceaggregator.controller.register;
+package com.ninedocs.serviceaggregator.controller.register.emailverificationcode;
 
 import com.ninedocs.serviceaggregator.client.user.emailverificationcode.EmailVerificationCodeClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
-import com.ninedocs.serviceaggregator.controller.register.request.VerificationCodeCreateRequest;
-import com.ninedocs.serviceaggregator.controller.register.response.VerificationCodeCreateResponse;
+import com.ninedocs.serviceaggregator.controller.register.emailverificationcode.dto.VerificationCodeCreateRequest;
+import com.ninedocs.serviceaggregator.controller.register.emailverificationcode.dto.VerificationCodeCreateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

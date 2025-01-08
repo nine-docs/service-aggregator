@@ -1,8 +1,6 @@
-package com.ninedocs.serviceaggregator.controller.register.exception;
+package com.ninedocs.serviceaggregator.controller.register.emailverificationcode.exception;
 
 import com.ninedocs.serviceaggregator.controller.common.exception.CustomException;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public final class EmailDuplicateException extends CustomException {
 
