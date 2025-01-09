@@ -38,10 +38,10 @@ public class EmailVerificationController {
           if ("VERIFICATION_FAILED".equals(domainResponse.getErrorCode())) {
             return Mono.error(new EmailVerificationFailedException());
           }
-          return Mono.just(domainResponse);
+          return Mono.just(domainResponse.getData());
         })
         .map(domainResponse -> ApiResponse.success(EmailVerifiedResponse.builder()
-            .verificationExpiredAt(domainResponse.getData().getVerificationExpiredAt())
+            .verificationExpiredAt(domainResponse.getVerificationExpiredAt())
             .build()))
         .map(ResponseEntity::ok);
   }
