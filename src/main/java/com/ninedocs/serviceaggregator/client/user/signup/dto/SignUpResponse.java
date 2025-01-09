@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.user.register.dto;
+package com.ninedocs.serviceaggregator.client.user.signup.dto;
 
 import java.time.LocalDateTime;
 import lombok.Getter;

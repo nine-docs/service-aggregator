@@ -1,7 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.register.register;
 
-import com.ninedocs.serviceaggregator.client.user.register.SignInClient;
-import com.ninedocs.serviceaggregator.client.user.register.dto.SignUpRequest;
+import com.ninedocs.serviceaggregator.client.user.signup.SignUpClient;
+import com.ninedocs.serviceaggregator.client.user.signup.dto.SignUpRequest;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterRequest;
 import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterResponse;
@@ -21,14 +21,14 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RegisterController {
 
-  private final SignInClient client;
+  private final SignUpClient client;
 
   @Operation(summary = "회원 가입 (구독)")
   @PostMapping("/api/v1/register")
   public Mono<ResponseEntity<ApiResponse<RegisterResponse>>> register(
       @RequestBody @Valid RegisterRequest registerRequest
   ) {
-    return client.signIn(
+    return client.signUp(
             SignUpRequest.builder()
                 .email(registerRequest.getEmail())
                 .nickname(registerRequest.getNickname())
