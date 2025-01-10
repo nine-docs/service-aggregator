@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.mypage.response;
+package com.ninedocs.serviceaggregator.controller.mypage.subscription.dto;
 
 import java.util.List;
 import lombok.Builder;

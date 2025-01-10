@@ -7,13 +7,5 @@ import lombok.Getter;
 @Builder
 public class JwtDecodeResult {
 
-  private Boolean isValid;
-  private JwtInfo jwtInfo;
-
-  @Getter
-  @Builder
-  public static class JwtInfo {
-
-    private Long userId;
-  }
+  private Long userId;
 }
