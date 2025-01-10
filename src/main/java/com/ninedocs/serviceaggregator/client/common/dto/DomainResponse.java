@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.user.common.dto;
+package com.ninedocs.serviceaggregator.client.common.dto;
 
 import lombok.Getter;
 

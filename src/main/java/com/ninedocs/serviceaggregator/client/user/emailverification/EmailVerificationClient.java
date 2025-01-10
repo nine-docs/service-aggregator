@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.client.user.emailverification;
 
-import com.ninedocs.serviceaggregator.client.user.common.dto.DomainResponse;
+import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationRequest;
 import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationResponse;
 import lombok.RequiredArgsConstructor;
