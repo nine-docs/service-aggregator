@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.client.user.signup;
 
-import com.ninedocs.serviceaggregator.client.user.common.dto.DomainResponse;
+import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.user.signup.dto.SignUpRequest;
 import com.ninedocs.serviceaggregator.client.user.signup.dto.SignUpResponse;
 import lombok.RequiredArgsConstructor;

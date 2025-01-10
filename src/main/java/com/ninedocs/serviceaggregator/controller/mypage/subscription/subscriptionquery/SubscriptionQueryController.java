@@ -1,11 +1,11 @@
-package com.ninedocs.serviceaggregator.controller.mypage.subscription;
+package com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.dto.SubscriptionResponse;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.dto.SubscriptionResponse.CategoryResponse;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.dto.SubscriptionResponse.DayOfWeek;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.dto.SubscriptionResponse.MailReceivingScheduleResponse;
+import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse;
+import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.CategoryResponse;
+import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.DayOfWeek;
+import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.MailReceivingScheduleResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "구독 관리")
+@Tag(name = "구독관리")
 @RestController
 @RequiredArgsConstructor
-public class SubscriptionController {
+public class SubscriptionQueryController {
 
   private final JwtDecoder jwtDecoder;
 

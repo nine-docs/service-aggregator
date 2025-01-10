@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.client.user.signin;
 
-import com.ninedocs.serviceaggregator.client.user.common.dto.DomainResponse;
+import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.user.signin.dto.SignInRequest;
 import com.ninedocs.serviceaggregator.client.user.signin.dto.SignInResponse;
 import lombok.RequiredArgsConstructor;
