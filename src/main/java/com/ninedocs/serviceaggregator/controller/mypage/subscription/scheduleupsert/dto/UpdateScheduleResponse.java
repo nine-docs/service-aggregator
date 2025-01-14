@@ -1,5 +1,6 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto;
 
+import com.ninedocs.serviceaggregator.client.article.userscheduleupsert.dto.UserScheduleUpsertResponse;
 import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
 import java.util.List;
 import lombok.AccessLevel;
@@ -12,10 +13,14 @@ public class UpdateScheduleResponse {
 
   private MailReceivingScheduleResponse mailReceivingSchedule;
 
-  public static UpdateScheduleResponse of(List<DayOfWeek> dayOfWeeks) {
+  public static UpdateScheduleResponse of(List<UserScheduleUpsertResponse> domainResponse) {
+    List<DayOfWeek> dayOfWeek = domainResponse.stream()
+        .map(UserScheduleUpsertResponse::getDayOfWeek)
+        .toList();
+
     return UpdateScheduleResponse.builder()
         .mailReceivingSchedule(MailReceivingScheduleResponse.builder()
-            .dayOfWeeks(dayOfWeeks)
+            .dayOfWeeks(dayOfWeek)
             .build())
         .build();
   }

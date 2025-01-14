@@ -1,14 +1,15 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
+import com.ninedocs.serviceaggregator.client.article.userscheduleupsert.UserScheduleUpsertClient;
+import com.ninedocs.serviceaggregator.client.article.userscheduleupsert.dto.UserScheduleUpsertRequest;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,10 @@ import reactor.core.publisher.Mono;
 public class ScheduleUpsertController {
 
   private final JwtDecoder jwtDecoder;
+  private final UserProfileClient userProfileClient;
+  private final UserScheduleUpsertClient userScheduleUpsertClient;
 
-  @Operation(summary = "내 메일 수신 주기 생성/수정 Mock")
+  @Operation(summary = "내 메일 수신 주기 생성/수정")
   @PostMapping("/api/v1/my-page/subscription/schedule")
   public Mono<ResponseEntity<ApiResponse<UpdateScheduleResponse>>> createUpsertSchedule(
       @RequestHeader("Authentication") String authToken,
@@ -32,8 +35,15 @@ public class ScheduleUpsertController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return Mono.just(ResponseEntity.ok(ApiResponse.success(
-        UpdateScheduleResponse.of(List.of(DayOfWeek.MON, DayOfWeek.WED, DayOfWeek.SAT))
-    )));
+    return userProfileClient.userProfile(userId)
+        .flatMap(userProfile -> userScheduleUpsertClient.upsertUserSchedule(
+            UserScheduleUpsertRequest.builder()
+                .userEmail(userProfile.getEmail())
+                .schedules(request.getSchedules())
+                .build()
+        ))
+        .map(responses -> ResponseEntity.ok(ApiResponse.success(
+            UpdateScheduleResponse.of(responses)
+        )));
   }
 }

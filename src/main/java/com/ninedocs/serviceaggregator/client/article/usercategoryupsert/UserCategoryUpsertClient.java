@@ -29,17 +29,21 @@ public class UserCategoryUpsertClient {
         .map(String::valueOf)
         .collect(Collectors.joining(", "))
     );
+    final String uriPath = "/api/v1/article/user-category/";
+
     return articleWebClient.post()
         .uri(uriBuilder -> uriBuilder
-            .path("/api/v1/article/user-category/")
+            .path(uriPath)
             .build())
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(request)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<List<UserCategoryUpsertResponse>>>() {
-        })
+        .bodyToMono(
+            new ParameterizedTypeReference<DomainResponse<List<UserCategoryUpsertResponse>>>() {
+            })
         .flatMap(domainResponse -> !domainResponse.getSuccess()
-            ? Mono.error(new Unknown2xxErrorException())
+            ? Mono.error(new Unknown2xxErrorException(
+                "article", uriPath, domainResponse.getErrorCode()))
             : Mono.just(domainResponse.getData()));
   }
 }

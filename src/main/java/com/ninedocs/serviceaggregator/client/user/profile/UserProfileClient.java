@@ -14,19 +14,24 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserProfileClient {
 
+  private static final String DOMAIN_NAME = "user";
+
   private final WebClient userWebClient;
 
   public Mono<UserProfileResponse> userProfile(Long userId) {
+    final String uri = "/api/v1/user/" + userId;
+
     return userWebClient.get()
         .uri(uriBuilder -> uriBuilder
-            .path("/api/v1/user/" + userId)
+            .path(uri)
             .build())
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<UserProfileResponse>>() {
         })
         .flatMap(responseBody -> !responseBody.getSuccess()
-            ? Mono.error(new Unknown2xxErrorException())
+            ? Mono.error(new Unknown2xxErrorException(
+                DOMAIN_NAME, uri, responseBody.getErrorCode()))
             : Mono.just(responseBody.getData()));
   }
 }

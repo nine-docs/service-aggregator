@@ -17,13 +17,15 @@ public class AllCategoriesQueryClient {
   private final WebClient articleWebClient;
 
   public Mono<List<CategoryResult>> getAllCategories() {
+    final String uriPath = "/api/v1/article/category/";
     return articleWebClient.get()
-        .uri("/api/v1/article/category/")
+        .uri(uriPath)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<List<CategoryResult>>>() {
         })
         .flatMap(responseBody -> !responseBody.getSuccess()
-            ? Mono.error(new Unknown2xxErrorException())
+            ? Mono.error(new Unknown2xxErrorException(
+                "article", uriPath, responseBody.getErrorCode()))
             : Mono.just(responseBody.getData())
         );
   }

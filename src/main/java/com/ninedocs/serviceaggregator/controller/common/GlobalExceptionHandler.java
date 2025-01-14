@@ -1,10 +1,12 @@
 package com.ninedocs.serviceaggregator.controller.common;
 
 import com.ninedocs.serviceaggregator.client.common.error.ApiErrorException;
+import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.controller.common.exception.CustomException;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,7 +35,20 @@ public class GlobalExceptionHandler {
     );
   }
 
-  @ExceptionHandler(WebExchangeBindException.class)
+  @ExceptionHandler(Unknown2xxErrorException.class)
+  public Mono<ResponseEntity<String>> handleUnknown2xxErrorException(
+      Unknown2xxErrorException e
+  ) {
+    log.error("# {} 도메인에 {} 요청 시 Unknown2xxErrorException Error 발생 - errorCode: {}",
+        e.getDomainName(), e.getRequestUri(), e.getErrorCode()
+    );
+    return Mono.just(
+        ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .body(e.getErrorCode())
+    );
+  }
+
+  @ExceptionHandler(WebExchangeBindException.class)    // Spring Validator 에러
   public Mono<ResponseEntity<String>> handleMethodArgumentNotValidException(
       WebExchangeBindException e
   ) {
