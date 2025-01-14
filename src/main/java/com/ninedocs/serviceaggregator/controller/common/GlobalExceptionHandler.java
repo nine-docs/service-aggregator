@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
     );
   }
 
-  @ExceptionHandler(WebExchangeBindException.class)    // Spring Validator 에러
-  public Mono<ResponseEntity<String>> handleMethodArgumentNotValidException(
+  @ExceptionHandler(WebExchangeBindException.class)
+  public Mono<ResponseEntity<String>> handleSpringValidatorError(
       WebExchangeBindException e
   ) {
     List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
