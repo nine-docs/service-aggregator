@@ -9,6 +9,7 @@ import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryups
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse.CategoryResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+@Tag(name = "구독관리")
 @RestController
 @RequiredArgsConstructor
 public class CategoryUpsertController {
@@ -45,9 +47,9 @@ public class CategoryUpsertController {
             CategoryUpdateResponse.builder()
                 .categories(
                     results.stream()
-                        .map(category -> CategoryResponse.builder()
-                            .id(category.getId())
-                            .name(category.getCategoryTitle())
+                        .map(userCategory -> CategoryResponse.builder()
+                            .id(userCategory.getCategoryId())
+                            .name(userCategory.getCategoryTitle())
                             .build())
                         .toList()
                 )

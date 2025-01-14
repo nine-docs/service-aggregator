@@ -6,6 +6,7 @@ import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleups
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.DayOfWeek;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+@Tag(name = "구독관리")
 @RestController
 @RequiredArgsConstructor
 public class ScheduleUpsertController {
