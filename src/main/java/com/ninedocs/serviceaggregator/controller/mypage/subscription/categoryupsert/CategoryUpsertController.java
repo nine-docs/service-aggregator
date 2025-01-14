@@ -2,13 +2,14 @@ package com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryup
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.article.usercategoryupsert.UserCategoryUpsertClient;
+import com.ninedocs.serviceaggregator.client.article.usercategoryupsert.dto.UserCategoryUpsertRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse.CategoryResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class CategoryUpsertController {
   private final UserProfileClient userProfileClient;
   private final UserCategoryUpsertClient userCategoryUpsertClient;
 
+  @Operation(summary = "내 구독 카테고리 생성/수정")
   @PostMapping("/api/v1/my-page/subscription/my-categories")
   public Mono<ResponseEntity<ApiResponse<CategoryUpdateResponse>>> createUpsertMyCategories(
       @RequestHeader("Authentication") String authToken,
@@ -33,13 +35,23 @@ public class CategoryUpsertController {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
     return userProfileClient.userProfile(userId)
-        .flatMap(result -> Mono.just(ResponseEntity.ok(ApiResponse.success(
-            CategoryUpdateResponse.builder()
-                .categories(List.of(CategoryResponse.builder()
-                    .id(1L)
-                    .name("Kubernetes")
-                    .build()))
+        .flatMap(userProfile -> userCategoryUpsertClient.upsertUserCategory(
+            UserCategoryUpsertRequest.builder()
+                .userEmail(userProfile.getEmail())
+                .categoryIds(request.getCategoryIds())
                 .build()
-        ))));
+        ))
+        .map(results -> ResponseEntity.ok(ApiResponse.success(
+            CategoryUpdateResponse.builder()
+                .categories(
+                    results.stream()
+                        .map(category -> CategoryResponse.builder()
+                            .id(category.getId())
+                            .name(category.getCategoryTitle())
+                            .build())
+                        .toList()
+                )
+                .build()
+        )));
   }
 }
