@@ -18,13 +18,13 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-public class ScheduleUpdateController {
+public class ScheduleUpsertController {
 
   private final JwtDecoder jwtDecoder;
 
   @Operation(summary = "내 메일 수신 주기 생성/수정 Mock")
   @PostMapping("/api/v1/my-page/subscription/schedule")
-  public Mono<ResponseEntity<ApiResponse<UpdateScheduleResponse>>> createUpdateSchedule(
+  public Mono<ResponseEntity<ApiResponse<UpdateScheduleResponse>>> createUpsertSchedule(
       @RequestHeader("Authentication") String authToken,
       @RequestBody @Valid UpdateScheduleRequest request
   ) {
