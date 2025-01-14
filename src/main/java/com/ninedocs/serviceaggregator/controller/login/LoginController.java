@@ -3,7 +3,6 @@ package com.ninedocs.serviceaggregator.controller.login;
 import com.ninedocs.serviceaggregator.client.user.signin.SignInClient;
 import com.ninedocs.serviceaggregator.client.user.signin.dto.SignInRequest;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
-import com.ninedocs.serviceaggregator.controller.login.exception.LoginFailedException;
 import com.ninedocs.serviceaggregator.controller.login.request.LoginRequest;
 import com.ninedocs.serviceaggregator.controller.login.response.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,12 +33,6 @@ public class LoginController {
                 .password(loginRequest.getPassword())
                 .build()
         )
-        .flatMap(domainResponse -> {
-          if ("LOGIN_FAILED".equals(domainResponse.getErrorCode())) {
-            return Mono.error(new LoginFailedException());
-          }
-          return Mono.just(domainResponse.getData());
-        })
         .map(domainResponse -> ApiResponse.success(LoginResponse.builder()
             .accessToken(domainResponse.getToken())
             .accessTokenExpiredAt(domainResponse.getAccessTokenExpiredAt())
