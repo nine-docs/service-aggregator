@@ -42,7 +42,7 @@ class JwtDecoderTest {
         TokenInvalidException.class,
         () -> jwtDecoder.decode(TEST_TOKEN)
     );
-    assertEquals(tokenInvalidException.getErrorCode(), InvalidCause.TOKEN_EXPIRED.name());
+    assertEquals(tokenInvalidException.getErrorCode(), InvalidCause.TOKEN_EXPIRED.getDescription());
   }
 
   @Test
@@ -59,6 +59,6 @@ class JwtDecoderTest {
         TokenInvalidException.class,
         () -> jwtDecoder.decode(TEST_TOKEN)
     );
-    assertEquals(tokenInvalidException.getErrorCode(), InvalidCause.UNKNOWN.name());
+    assertEquals(tokenInvalidException.getErrorCode(), InvalidCause.UNKNOWN.getDescription());
   }
 }
