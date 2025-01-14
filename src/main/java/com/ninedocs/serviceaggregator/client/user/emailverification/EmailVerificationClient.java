@@ -3,6 +3,7 @@ package com.ninedocs.serviceaggregator.client.user.emailverification;
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationRequest;
 import com.ninedocs.serviceaggregator.client.user.emailverification.dto.EmailVerificationResponse;
+import com.ninedocs.serviceaggregator.controller.register.emailverification.exception.EmailVerificationFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ public class EmailVerificationClient {
 
   private final WebClient userWebClient;
 
-  public Mono<DomainResponse<EmailVerificationResponse>> verifyEmail(
+  public Mono<EmailVerificationResponse> verifyEmail(
       EmailVerificationRequest request
   ) {
     return userWebClient.post()
@@ -26,6 +27,13 @@ public class EmailVerificationClient {
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(request)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<>() {});
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<EmailVerificationResponse>>() {
+        })
+        .flatMap(domainResponse -> {
+          if ("VERIFICATION_FAILED".equals(domainResponse.getErrorCode())) {
+            return Mono.error(new EmailVerificationFailedException());
+          }
+          return Mono.just(domainResponse.getData());
+        });
   }
 }

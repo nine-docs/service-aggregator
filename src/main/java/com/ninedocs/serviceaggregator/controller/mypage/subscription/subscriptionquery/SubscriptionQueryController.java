@@ -1,10 +1,10 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.CategoryResponse;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.DayOfWeek;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.MailReceivingScheduleResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,7 @@ public class SubscriptionQueryController {
 
   private final JwtDecoder jwtDecoder;
 
-  @Operation(summary = "내 구독 정보 조회")
+  @Operation(summary = "내 구독 정보 조회 Mock")
   @GetMapping("/api/v1/my-page/subscription")
   public Mono<ResponseEntity<ApiResponse<SubscriptionResponse>>> getSubscription(
       @RequestHeader("Authentication") String authToken

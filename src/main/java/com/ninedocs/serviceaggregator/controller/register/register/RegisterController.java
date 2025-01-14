@@ -5,7 +5,6 @@ import com.ninedocs.serviceaggregator.client.user.signup.dto.SignUpRequest;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterRequest;
 import com.ninedocs.serviceaggregator.controller.register.register.dto.RegisterResponse;
-import com.ninedocs.serviceaggregator.controller.register.register.exception.EmailNotVerifiedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -35,12 +34,6 @@ public class RegisterController {
                 .password(registerRequest.getPassword())
                 .build()
         )
-        .flatMap(domainResponse -> {
-          if ("EMAIL_NOT_VERIFIED".equals(domainResponse.getErrorCode())) {
-            return Mono.error(new EmailNotVerifiedException());
-          }
-          return Mono.just(domainResponse.getData());
-        })
         .map(domainResponse -> ApiResponse.success(RegisterResponse.builder()
             .userId(domainResponse.getId())
             .accessToken(domainResponse.getToken())

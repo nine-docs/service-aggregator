@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class EmailVerifyRequest {
 
-  @Schema(example = "fail@email.com")
+  @Schema(example = "test@email.com")
   @NotNull
   @Size(min = 1, max = 255)
   @Email
   private String email;
 
-  @Schema(example = "123456")
+  @Schema(example = "111111")
   @NotNull
   @Size(min = 6, max = 6)
   private String emailVerificationCode;

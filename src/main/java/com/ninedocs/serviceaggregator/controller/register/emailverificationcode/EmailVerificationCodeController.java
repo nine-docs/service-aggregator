@@ -4,7 +4,6 @@ import com.ninedocs.serviceaggregator.client.user.emailverificationcode.EmailVer
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.register.emailverificationcode.dto.VerificationCodeCreateRequest;
 import com.ninedocs.serviceaggregator.controller.register.emailverificationcode.dto.VerificationCodeCreateResponse;
-import com.ninedocs.serviceaggregator.controller.register.emailverificationcode.exception.EmailDuplicateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,17 +27,9 @@ public class EmailVerificationCodeController {
       @RequestBody @Valid VerificationCodeCreateRequest request
   ) {
     return client.sendEmailVerificationCode(request.getEmail())
-        .flatMap(domainResponse -> {
-          if ("EMAIL_DUPLICATED".equals(domainResponse.getErrorCode())) {
-            return Mono.error(new EmailDuplicateException());
-          }
-          return Mono.just(domainResponse);
-        })
-        .map(domainResponse -> ResponseEntity.ok(ApiResponse.success(
+        .map(response -> ResponseEntity.ok(ApiResponse.success(
             VerificationCodeCreateResponse.builder()
-                .verificationCodeExpiredAt(
-                    domainResponse.getData().getVerificationCodeExpiredAt()
-                )
+                .verificationCodeExpiredAt(response.getVerificationCodeExpiredAt())
                 .build()
         )));
   }

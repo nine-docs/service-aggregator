@@ -1,6 +1,7 @@
+server:
+  port: 8080
 domains:
   user:
     url: ''
 jwt:
   secret: 'secret-64-byte-minimum-secret-key-which-must-be-long-enough-for-hmac'
-  access-token-expiration-ms: 3600000
