@@ -1,5 +1,6 @@
 package com.ninedocs.serviceaggregator.client.article.config;
 
+import com.ninedocs.serviceaggregator.client.common.error.ApiErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,8 +28,18 @@ public class ArticleWebClientConfig {
 
   private ExchangeFilterFunction errorHandler() {
     return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-      // Todo : 에러 핸들링 구현
       log.debug("# clientResponse statusCode: {}", clientResponse.statusCode());
+      if (clientResponse.statusCode().isError()) {
+        return clientResponse.bodyToMono(String.class)
+            .flatMap(errorBody -> Mono.error(
+                ApiErrorException.builder()
+                    .domainName("Article")
+                    .requestUri(clientResponse.request().getURI())
+                    .statusCode(clientResponse.statusCode())
+                    .reason(errorBody)
+                .build()
+            ));
+      }
       return Mono.just(clientResponse);
     });
   }
