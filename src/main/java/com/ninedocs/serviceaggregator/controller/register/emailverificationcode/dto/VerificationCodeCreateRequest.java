@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class VerificationCodeCreateRequest {
 
-  @Schema(example = "duplicate@email.com")
+  @Schema(example = "test@email.com")
   @NotNull
   @Email
   @Size(max = 255, min = 1)

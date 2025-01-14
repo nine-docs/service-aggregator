@@ -1,6 +1,8 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.article.usercategoryupsert.UserCategoryUpsertClient;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse;
@@ -20,6 +22,8 @@ import reactor.core.publisher.Mono;
 public class CategoryUpsertController {
 
   private final JwtDecoder jwtDecoder;
+  private final UserProfileClient userProfileClient;
+  private final UserCategoryUpsertClient userCategoryUpsertClient;
 
   @PostMapping("/api/v1/my-page/subscription/my-categories")
   public Mono<ResponseEntity<ApiResponse<CategoryUpdateResponse>>> createUpsertMyCategories(
@@ -27,13 +31,15 @@ public class CategoryUpsertController {
       @RequestBody @Valid CategoryUpdateRequest request
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
-    return Mono.just(ResponseEntity.ok(ApiResponse.success(
-        CategoryUpdateResponse.builder()
-            .categories(List.of(CategoryResponse.builder()
-                .id(1L)
-                .name("Kubernetes")
-                .build()))
-            .build()
-    )));
+
+    return userProfileClient.userProfile(userId)
+        .flatMap(result -> Mono.just(ResponseEntity.ok(ApiResponse.success(
+            CategoryUpdateResponse.builder()
+                .categories(List.of(CategoryResponse.builder()
+                    .id(1L)
+                    .name("Kubernetes")
+                    .build()))
+                .build()
+        ))));
   }
 }

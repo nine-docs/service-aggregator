@@ -1,6 +1,8 @@
+server:
+  port: 80
 domains:
   user:
-    url: 'http://localhost:8001'
+    url: 'http://localhost:8080'
   article:
     url: 'http://localhost:8000'
 jwt:
