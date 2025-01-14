@@ -14,18 +14,20 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AllCategoriesQueryClient {
 
+  private static final String DOMAIN_NAME = "Article";
+  private static final String URI_PATH = "/api/v1/article/category/";
+
   private final WebClient articleWebClient;
 
   public Mono<List<CategoryResult>> getAllCategories() {
-    final String uriPath = "/api/v1/article/category/";
     return articleWebClient.get()
-        .uri(uriPath)
+        .uri(URI_PATH)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<List<CategoryResult>>>() {
         })
         .flatMap(responseBody -> !responseBody.getSuccess()
             ? Mono.error(new Unknown2xxErrorException(
-                "article", uriPath, responseBody.getErrorCode()))
+                DOMAIN_NAME, URI_PATH, responseBody.getErrorCode()))
             : Mono.just(responseBody.getData())
         );
   }
