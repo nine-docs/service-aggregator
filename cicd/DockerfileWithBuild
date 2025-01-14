@@ -1,11 +1,26 @@
+######## Build ########
 FROM gradle:7.6.0-jdk17-alpine AS builder
+
 WORKDIR /app
 COPY . .
 RUN ./gradlew clean build
 
-
+######## 실행 ########
 FROM amazoncorretto:17.0.13-alpine3.20
+
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
+
+# 이미지 build 시 실제로 사용할 값 주입 필요
+# .env 파일에 다음과 같은 내용 작성
+# PROFILE=prod
+# JWT_SECRET=test-secret-test-secret-test-secret-test-secret-test-secret-test-secret-test-secret
+# USER_URL=http://localhost:8080
+# ARTICLE_URL=http://localhost:8000
+
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar app.jar \
+  --spring.profiles.active=${PROFILE} \
+  -DJWT_SECRET=${JWT_SECRET} \
+  -DUSER_URL=${USER_URL} \
+  -DARTICLE_URL=${ARTICLE_URL}"]
