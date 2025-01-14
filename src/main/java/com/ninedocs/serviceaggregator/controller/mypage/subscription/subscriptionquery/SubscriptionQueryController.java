@@ -23,7 +23,7 @@ public class SubscriptionQueryController {
 
   private final JwtDecoder jwtDecoder;
 
-  @Operation(summary = "내 구독 정보 조회")
+  @Operation(summary = "내 구독 정보 조회 Mock")
   @GetMapping("/api/v1/my-page/subscription")
   public Mono<ResponseEntity<ApiResponse<SubscriptionResponse>>> getSubscription(
       @RequestHeader("Authentication") String authToken
