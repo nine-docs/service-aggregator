@@ -1,5 +1,6 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto;
 
+import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +25,5 @@ public class SubscriptionResponse {
   public static class MailReceivingScheduleResponse {
 
     private List<DayOfWeek> dayOfWeeks;
-  }
-
-  public enum DayOfWeek {
-    MON, WED, SAT
   }
 }

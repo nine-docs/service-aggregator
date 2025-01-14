@@ -1,10 +1,10 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleResponse;
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.DayOfWeek;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

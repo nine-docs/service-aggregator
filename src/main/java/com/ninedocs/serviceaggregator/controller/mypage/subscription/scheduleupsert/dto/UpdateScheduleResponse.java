@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto;
 
-import com.ninedocs.serviceaggregator.controller.mypage.subscription.subscriptionquery.dto.SubscriptionResponse.DayOfWeek;
+import com.ninedocs.serviceaggregator.client.common.dto.DayOfWeek;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
