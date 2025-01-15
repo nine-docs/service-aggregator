@@ -2,6 +2,11 @@ server:
   port: 8080
 domains:
   user:
-    url: ''
+    url: ${USER_URL}
+  article:
+    url: ${ARTICLE_URL}
 jwt:
-  secret: 'secret-64-byte-minimum-secret-key-which-must-be-long-enough-for-hmac'
+  secret: ${JWT_SECRET}
+logging:
+  level:
+    root: WARN
