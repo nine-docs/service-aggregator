@@ -7,6 +7,7 @@ import lombok.Getter;
 public class UserScheduleUpsertResponse {
 
   private Long id;
+  private Long userId;
   private String userEmail;
   private DayOfWeek dayOfWeek;
 }
