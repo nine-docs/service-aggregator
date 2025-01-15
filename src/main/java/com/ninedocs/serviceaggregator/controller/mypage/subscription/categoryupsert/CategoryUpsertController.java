@@ -39,6 +39,7 @@ public class CategoryUpsertController {
     return userProfileClient.userProfile(userId)
         .flatMap(userProfile -> userCategoryUpsertClient.upsertUserCategory(
             UserCategoryUpsertRequest.builder()
+                .userId(userId)
                 .userEmail(userProfile.getEmail())
                 .categoryIds(request.getCategoryIds())
                 .build()

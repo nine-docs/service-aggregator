@@ -38,6 +38,7 @@ public class ScheduleUpsertController {
     return userProfileClient.userProfile(userId)
         .flatMap(userProfile -> userScheduleUpsertClient.upsertUserSchedule(
             UserScheduleUpsertRequest.builder()
+                .userId(userId)
                 .userEmail(userProfile.getEmail())
                 .schedules(request.getSchedules())
                 .build()

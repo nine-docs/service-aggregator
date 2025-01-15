@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 public class UserCategoryUpsertRequest {
 
+  private Long userId;
   private String userEmail;
   private List<Long> categoryIds;
 }
