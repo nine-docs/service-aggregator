@@ -5,7 +5,7 @@ spring:
     active: 'local'
 springdoc:
   swagger-ui:
-    path: '/swagger'
+    path: '/service-aggregator/swagger'
     disable-swagger-default-url: true
     operations-sorter: 'alpha'
     tags-sorter: 'alpha'

@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 public class UserScheduleUpsertRequest {
 
+  private Long userId;
   private String userEmail;
   private List<DayOfWeek> schedules;
 }
