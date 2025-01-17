@@ -44,6 +44,14 @@ public class OpenApiConfig {
         .build();
   }
 
+  @Bean
+  public GroupedOpenApi articleGroupedOpenApi() {
+    return GroupedOpenApi.builder()
+        .group("(d) 문제페이지")
+        .pathsToMatch("/api/v1/article/**")
+        .build();
+  }
+
 
   @Bean
   public GroupedOpenApi systemGroupedOpenApi() {
