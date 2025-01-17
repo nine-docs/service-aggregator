@@ -1,5 +1,5 @@
 # Service Aggregator
-- Swagger URI : /swagger
+- Swagger URI : /service-aggregator/swagger
 
 # 이미지 빌드 및 실행
 ## Dockerfile로 이미지 빌드
