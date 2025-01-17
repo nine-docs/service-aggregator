@@ -1,6 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.mypage.unregister;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.user.unregister.UnregisterClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,14 +18,15 @@ import reactor.core.publisher.Mono;
 public class UnregisterController {
 
   private final JwtDecoder jwtDecoder;
+  private final UnregisterClient unregisterClient;
 
-  @Operation(summary = "회원 탈퇴 Mock")
+  @Operation(summary = "회원 탈퇴")
   @PostMapping("/api/v1/my-page/unregister")
   public Mono<ResponseEntity<ApiResponse<Void>>> unregister(
       @RequestHeader("Authentication") String authToken
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
-
-    return Mono.just(ResponseEntity.ok(ApiResponse.success()));
+    return unregisterClient.unregister(userId)
+        .map(resultString -> ResponseEntity.ok(ApiResponse.success()));
   }
 }
