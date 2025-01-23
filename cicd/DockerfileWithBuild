@@ -11,15 +11,12 @@ FROM amazoncorretto:17.0.13-alpine3.20
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# 이미지 build 시 실제로 사용할 값 주입 필요
-# .env 파일에 다음과 같은 내용 작성
-# PROFILE=prod
-# JWT_SECRET=test-secret-test-secret-test-secret-test-secret-test-secret-test-secret-test-secret
-# USER_URL=http://localhost:8080
-# ARTICLE_URL=http://localhost:8000
-
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -jar app.jar \
+ENV JVM_OPTIONS="-Xms128m -Xmx384m"
+
+ENTRYPOINT ["sh", "-c", "java \
+  ${JVM_OPTIONS} \
+  -jar app.jar \
   --spring.profiles.active=${PROFILE} \
   -DJWT_SECRET=${JWT_SECRET} \
   -DUSER_URL=${USER_URL} \
