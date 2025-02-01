@@ -1,7 +1,9 @@
 package com.ninedocs.serviceaggregator.client.subcontents.bookmark;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
+import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkCreateClientRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkCreateClientResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,22 +22,26 @@ public class BookmarkCreateClient {
   private final WebClient subContentsWebClient;
 
   // Todo 북마크 API 수정되면 반영해야함
-  public Mono<String> createBookmark(Long userId, Long articleId) {
-    final String uri = "/api/v1/bookmark/" + userId;
+  public Mono<BookmarkCreateClientResponse> createBookmark(Long userId, Long articleId) {
+    final String uriPath = "/api/v1/bookmark/" + userId;
 
     return subContentsWebClient.post()
         .uri(uriBuilder -> uriBuilder
-            .path(uri)
+            .path(uriPath)
             .build())
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(BookmarkCreateClientRequest.builder()
             .articleId(articleId)
             .build())
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<String>>() {
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<BookmarkCreateClientResponse>>() {
         })
         .flatMap(domainResponse -> {
-          log.debug(domainResponse.getData());
+          if (!domainResponse.getSuccess()) {
+            return Mono.error(
+                new Unknown2xxErrorException(DOMAIN_NAME, uriPath, domainResponse.getErrorCode())
+            );
+          }
           return Mono.just(domainResponse.getData());
         });
   }

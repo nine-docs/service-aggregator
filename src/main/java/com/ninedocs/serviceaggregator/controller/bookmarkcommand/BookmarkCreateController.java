@@ -25,20 +25,21 @@ public class BookmarkCreateController {
   private final JwtDecoder jwtDecoder;
   private final BookmarkCreateClient bookmarkCreateClient;
 
-  @PostMapping("/api/v1/bookmark")
   @Operation(summary = "북마크하기")
+  @PostMapping("/api/v1/bookmark")
   public Mono<ResponseEntity<ApiResponse<BookmarkCreateResponse>>> createBookmark(
       @RequestHeader("Authentication") String authToken,
       @RequestBody @Valid BookmarkCreateRequest request
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    bookmarkCreateClient.createBookmark(userId, request.getArticleId());
-
-    return Mono.just(ResponseEntity.status(HttpStatus.CREATED.value())
-        .body(ApiResponse.success(BookmarkCreateResponse.builder()
-            .bookmarkId(1L)
-            .articleId(1L)
-            .build())));
+    return bookmarkCreateClient.createBookmark(userId, request.getArticleId())
+        .map(response ->
+            ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
+                BookmarkCreateResponse.builder()
+                    .bookmarkId(response.getId())
+                    .articleId(request.getArticleId())
+                    .build()
+            )));
   }
 }
