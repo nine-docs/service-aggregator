@@ -7,5 +7,12 @@ import lombok.Getter;
 public class UserCategoryQueryResponse {
 
   private Long userId;
-  private List<String> categoryTitles;
+  private List<CategoryResponse> categories;
+
+  @Getter
+  public static class CategoryResponse {
+
+    private Long id;
+    private String title;
+  }
 }
