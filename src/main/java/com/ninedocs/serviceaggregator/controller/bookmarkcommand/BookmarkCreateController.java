@@ -1,6 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.bookmarkcommand;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkCreateClient;
 import com.ninedocs.serviceaggregator.controller.bookmarkcommand.request.BookmarkCreateRequest;
 import com.ninedocs.serviceaggregator.controller.bookmarkcommand.response.BookmarkCreateResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 public class BookmarkCreateController {
 
   private final JwtDecoder jwtDecoder;
+  private final BookmarkCreateClient bookmarkCreateClient;
 
   @PostMapping("/api/v1/bookmark")
   @Operation(summary = "북마크하기")
@@ -30,6 +32,8 @@ public class BookmarkCreateController {
       @RequestBody @Valid BookmarkCreateRequest request
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
+
+    bookmarkCreateClient.createBookmark(userId, request.getArticleId());
 
     return Mono.just(ResponseEntity.status(HttpStatus.CREATED.value())
         .body(ApiResponse.success(BookmarkCreateResponse.builder()
