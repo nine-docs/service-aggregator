@@ -21,7 +21,6 @@ public class BookmarkCreateClient {
 
   private final WebClient subContentsWebClient;
 
-  // Todo 북마크 API 수정되면 반영해야함
   public Mono<BookmarkCreateClientResponse> createBookmark(Long userId, Long articleId) {
     final String uriPath = "/api/v1/bookmark/" + userId;
 
@@ -38,6 +37,7 @@ public class BookmarkCreateClient {
         })
         .flatMap(domainResponse -> {
           if (!domainResponse.getSuccess()) {
+            // Todo API 수정되면 반영할것
             return Mono.error(
                 new Unknown2xxErrorException(DOMAIN_NAME, uriPath, domainResponse.getErrorCode())
             );

@@ -1,11 +1,11 @@
 package com.ninedocs.serviceaggregator.controller.bookmarkcommand;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkDeleteClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 public class BookmarkDeleteController {
 
   private final JwtDecoder jwtDecoder;
+  private final BookmarkDeleteClient bookmarkDeleteClient;
 
   @DeleteMapping("/api/v1/bookmark/{bookmarkId}")
   @Operation(summary = "북마크 해제하기")
@@ -28,7 +29,7 @@ public class BookmarkDeleteController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return Mono.just(ResponseEntity.status(HttpStatus.CREATED.value())
-        .body(ApiResponse.success()));
+    return bookmarkDeleteClient.deleteBookmark(bookmarkId, userId)
+        .thenReturn(ResponseEntity.ok(ApiResponse.success()));
   }
 }
