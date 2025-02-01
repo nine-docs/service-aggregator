@@ -52,6 +52,14 @@ public class OpenApiConfig {
         .build();
   }
 
+  @Bean
+  public GroupedOpenApi bookmarkGroupedOpenApi() {
+    return GroupedOpenApi.builder()
+        .group("(e) 북마크")
+        .pathsToMatch("/api/v1/bookmark/**")
+        .build();
+  }
+
 
   @Bean
   public GroupedOpenApi systemGroupedOpenApi() {
