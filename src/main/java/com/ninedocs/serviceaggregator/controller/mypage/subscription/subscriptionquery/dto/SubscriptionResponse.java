@@ -22,9 +22,10 @@ public class SubscriptionResponse {
   ) {
     return SubscriptionResponse.builder()
         .categories(
-            userCategoryQueryResponse.getCategoryTitles().stream()
+            userCategoryQueryResponse.getCategories().stream()
                 .map(userCategory -> CategoryResponse.builder()
-                    .name(userCategory)
+                    .id(userCategory.getId())
+                    .name(userCategory.getTitle())
                     .build())
                 .collect(Collectors.toList())
         )
@@ -44,6 +45,7 @@ public class SubscriptionResponse {
   @Builder(access = AccessLevel.PRIVATE)
   public static class CategoryResponse {
 
+    private Long id;
     private String name;
   }
 
