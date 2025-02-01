@@ -11,4 +11,5 @@ ENTRYPOINT ["sh", "-c", "java \
   --spring.profiles.active=${PROFILE} \
   -DJWT_SECRET=${JWT_SECRET} \
   -DUSER_URL=${USER_URL} \
-  -DARTICLE_URL=${ARTICLE_URL}"]
+  -DARTICLE_URL=${ARTICLE_URL} \
+  -DSUB_CONTENTS_URL=${SUB_CONTENTS_URL}"]

@@ -5,6 +5,8 @@ domains:
     url: ${USER_URL}
   article:
     url: ${ARTICLE_URL}
+  sub-contents:
+    url: ${SUB_CONTENTS_URL}
 jwt:
   secret: ${JWT_SECRET}
 logging:
