@@ -24,7 +24,7 @@ public class BookmarkCreateController {
   private final JwtDecoder jwtDecoder;
 
   @PostMapping("/api/v1/bookmark")
-  @Operation(summary = "북마크 생성")
+  @Operation(summary = "북마크하기")
   public Mono<ResponseEntity<ApiResponse<BookmarkCreateResponse>>> createBookmark(
       @RequestHeader("Authentication") String authToken,
       @RequestBody @Valid BookmarkCreateRequest request
