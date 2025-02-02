@@ -5,6 +5,8 @@ domains:
     url: 'http://localhost:8080'
   article:
     url: 'http://localhost:8000'
+  sub-contents:
+    url: 'http://localhost:3000'
 jwt:
   secret: 'secret-64-byte-minimum-secret-key-which-must-be-long-enough-for-hmac'
 logging:
