@@ -26,20 +26,7 @@ public class JwtDecoder {
 
   public JwtDecodeResult decode(String token) {
     try {
-      JwtParser jwtParser = Jwts.parserBuilder()
-          .setSigningKey(secretKey)
-          .build();
-
-      Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
-
-      Claims claims = claimsJws.getBody();
-      String subject = claims.getSubject();
-
-      Long userId = Long.parseLong(subject);
-
-      return JwtDecodeResult.builder()
-          .userId(userId)
-          .build();
+      return baseDecode(token);
 
     } catch (ExpiredJwtException e) {
       throw new TokenInvalidException(InvalidCause.TOKEN_EXPIRED);
@@ -50,5 +37,33 @@ public class JwtDecoder {
 
       throw new TokenInvalidException(InvalidCause.UNKNOWN);
     }
+  }
+
+  public JwtDecodeResult decodeWithoutException(String token) {
+    try {
+      return baseDecode(token);
+
+    } catch (Exception e) {
+      return JwtDecodeResult.builder()
+          .userId(null)
+          .build();
+    }
+  }
+
+  private JwtDecodeResult baseDecode(String token) throws ExpiredJwtException {
+    JwtParser jwtParser = Jwts.parserBuilder()
+        .setSigningKey(secretKey)
+        .build();
+
+    Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
+
+    Claims claims = claimsJws.getBody();
+    String subject = claims.getSubject();
+
+    Long userId = Long.parseLong(subject);
+
+    return JwtDecodeResult.builder()
+        .userId(userId)
+        .build();
   }
 }

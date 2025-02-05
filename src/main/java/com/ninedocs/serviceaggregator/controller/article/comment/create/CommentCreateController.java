@@ -1,8 +1,8 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.create;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.CommentCreateClient;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.dto.CommentCreateClientRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.create.CommentCreateClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto.CommentCreateClientRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;

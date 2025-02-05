@@ -1,13 +1,19 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.query;
 
+import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.CommentQueryClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,7 +23,11 @@ import reactor.core.publisher.Mono;
 
 @Tag(name = "댓글/대댓글")
 @RestController
+@RequiredArgsConstructor
 public class CommentQueryController {
+
+  private final JwtDecoder jwtDecoder;
+  private final CommentQueryClient commentQueryClient;
 
   @Operation(summary = "댓글 목록 조회 페이지네이션")
   @GetMapping("/api/v1/article/{articleId}/comments")
@@ -27,8 +37,43 @@ public class CommentQueryController {
       @Parameter(description = "페이지 당 아이템 최대 갯수") @RequestParam(defaultValue = "20") int limit,
       @Parameter(description = "내 댓글 여부 계산 용 토큰, 생략 가능") @RequestHeader(value = "Authentication", required = false) String authToken
   ) {
-    return Mono.just(ResponseEntity.ok(ApiResponse.success(
-        CursorPageResponse.of(List.of(CommentResponse.builder().build()), null)
-    )));
+    final Long userId = jwtDecoder.decodeWithoutException(authToken).getUserId();
+
+    return commentQueryClient.getComments(
+            CommentQueryRequest.builder()
+                .articleId(articleId)
+                .cursor(cursor == null ? 0L : cursor)
+                .limit(limit)
+                .build()
+        )
+        .flatMap(commentCursorResponse -> {
+          // Todo user profile bulk 조회
+          return Mono.just(
+              commentCursorResponse.getItems().stream()
+                  .map(comment -> CommentResponse.builder()
+                      .commentId(comment.getCommentId())
+                      .author(AuthorResponse.builder()
+                          .id(comment.getAuthorId())
+                          .nickname(null)
+                          .isMe(comment.getAuthorId().equals(userId))
+                          .build())
+                      .reply(ReplyResponse.builder()
+                          .count(comment.getReply().getCount())
+                          .build())
+                      .content(comment.getContent())
+                      .createdAt(comment.getCreatedAt())
+                      .updatedAt(comment.getUpdatedAt())
+                      .build())
+                  .toList()
+          );
+        })
+        .map(comments ->
+            ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
+                comments,
+                CollectionUtils.isEmpty(comments)
+                    ? null
+                    : comments.get(comments.size() - 1).getCommentId()
+            )))
+        );
   }
 }
