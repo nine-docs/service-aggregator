@@ -4,6 +4,7 @@ import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkCreateClientRequest;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkCreateClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.exception.BookmarkAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -37,8 +38,10 @@ public class BookmarkCreateClient {
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<BookmarkCreateClientResponse>>() {
         })
         .flatMap(domainResponse -> {
+          if ("이미 존재하는 북마크입니다".equals(domainResponse.getErrorCode())) {
+            return Mono.error(new BookmarkAlreadyExistException());
+          }
           if (!domainResponse.getSuccess()) {
-            // Todo API 수정되면 반영할것
             log.debug("# error code : {}", domainResponse.getErrorCode());
             return Mono.error(
                 new Unknown2xxErrorException(DOMAIN_NAME, uriPath, domainResponse.getErrorCode())
