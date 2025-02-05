@@ -2,7 +2,7 @@ package com.ninedocs.serviceaggregator.client.subcontents.bookmark;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
-import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkQueryClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkIdResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class BookmarkQueryClient {
 
   private final WebClient subContentsWebClient;
 
-  public Mono<Optional<BookmarkQueryClientResponse>> getArticleBookmarkExist(
+  public Mono<Optional<BookmarkIdResponse>> getArticleBookmarkExist(
       Long userId, Long articleId
   ) {
     return subContentsWebClient.get()
@@ -32,7 +32,7 @@ public class BookmarkQueryClient {
             .build())
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<BookmarkQueryClientResponse>>() {
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<BookmarkIdResponse>>() {
         })
         .flatMap(domainResponse -> {
           log.debug("# data : {}", domainResponse.getData());

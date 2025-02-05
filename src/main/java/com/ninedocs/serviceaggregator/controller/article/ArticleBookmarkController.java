@@ -2,10 +2,10 @@ package com.ninedocs.serviceaggregator.controller.article;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkQueryClient;
-import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkQueryClientResponse;
 import com.ninedocs.serviceaggregator.controller.article.dto.BookmarkResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ public class ArticleBookmarkController {
   private final JwtDecoder jwtDecoder;
   private final BookmarkQueryClient bookmarkQueryClient;
 
+  @Operation(summary = "특정 문제의 북마크 여부 조회")
   @GetMapping("/api/v1/article/{articleId}/bookmark")
   public Mono<ResponseEntity<ApiResponse<BookmarkResponse>>> getArticleBookmarkExist(
       @PathVariable @Parameter(example = "1") Long articleId,
@@ -35,16 +36,12 @@ public class ArticleBookmarkController {
       Long userId = jwtDecoder.decode(authToken).getUserId();
 
       return bookmarkQueryClient.getArticleBookmarkExist(userId, articleId)
-          .map(bookmarkOptional -> {
-                log.debug("# bookmarkOptional.getId() : {}", bookmarkOptional.map(BookmarkQueryClientResponse::getId));
-                return bookmarkOptional.map(bookmarkQueryClientResponse ->
-                        new BookmarkResponse(bookmarkQueryClientResponse.getId()));
-              }
-          )
-          .map(bookmarkResponseOptional -> {
-            log.debug("# bookmarkResponse : {}", bookmarkResponseOptional);
-            return ResponseEntity.ok(ApiResponse.success(bookmarkResponseOptional.orElse(null)));
-          });
+          .map(bookmarkOptional -> bookmarkOptional.map(bookmarkIdResponse ->
+              new BookmarkResponse(bookmarkIdResponse.getId())
+          ))
+          .map(bookmarkResponseOptional -> ResponseEntity.ok(ApiResponse.success(
+              bookmarkResponseOptional.orElse(null)
+          )));
 
     } catch (ExpiredJwtException e) {
       log.warn("# 만료된 토큰으로 요청 발생 - /api/v1/article/{}/bookmark", articleId);

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BookmarkListQueryClientResponse {
+public class BookmarkSummaryResponse {
 
   private Long id;
   private Long articleId;
