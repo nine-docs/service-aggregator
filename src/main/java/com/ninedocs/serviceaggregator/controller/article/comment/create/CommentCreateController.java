@@ -61,8 +61,8 @@ public class CommentCreateController {
                     .reply(ReplyResponse.builder()
                         .count(0)
                         .build())
-                    .createdAt(null)
-                    .updatedAt(null)
+                    .createdAt(commentCreateResponse.getCreatedAt())
+                    .updatedAt(commentCreateResponse.getCreatedAt())
                     .build()
             ))
     );
