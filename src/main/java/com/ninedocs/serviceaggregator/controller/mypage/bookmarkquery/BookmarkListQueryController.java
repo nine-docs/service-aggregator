@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 @Tag(name = "북마크 목록 조회")
 @RestController
 @RequiredArgsConstructor
-public class BookmarkQueryController {
+public class BookmarkListQueryController {
 
   private final JwtDecoder jwtDecoder;
 
