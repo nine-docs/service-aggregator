@@ -1,6 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.mypage.bookmarkquery;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkListQueryClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.bookmarkquery.dto.BookmarkSummaryResponse;
@@ -25,6 +26,7 @@ import reactor.core.publisher.Mono;
 public class BookmarkListQueryController {
 
   private final JwtDecoder jwtDecoder;
+  private final BookmarkListQueryClient bookmarkListQueryClient;
 
   @Operation(summary = "북마크 목록 조회 페이지네이션")
   @GetMapping("/api/v1/my-page/bookmarks")
@@ -33,6 +35,8 @@ public class BookmarkListQueryController {
       @RequestParam(required = false) @Parameter(description = "직전 페이지의 마지막 북마크 id (첫 페이지 조회 시 null)") Long cursor,
       @RequestParam(defaultValue = "20") @Parameter(description = "한 페이지 최대 사이즈") int limit
   ) {
+    Long userId = jwtDecoder.decode(authToken).getUserId();
+
     return Mono.just(ResponseEntity.ok(ApiResponse.success(
         CursorPageResponse.of(
             List.of(
