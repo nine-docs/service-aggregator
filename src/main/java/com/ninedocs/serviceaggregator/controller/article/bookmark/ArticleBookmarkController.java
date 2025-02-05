@@ -1,8 +1,8 @@
-package com.ninedocs.serviceaggregator.controller.article;
+package com.ninedocs.serviceaggregator.controller.article.bookmark;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkQueryClient;
-import com.ninedocs.serviceaggregator.controller.article.dto.BookmarkResponse;
+import com.ninedocs.serviceaggregator.controller.article.bookmark.dto.BookmarkResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;

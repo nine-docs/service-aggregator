@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.article.dto;
+package com.ninedocs.serviceaggregator.controller.article.bookmark.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
