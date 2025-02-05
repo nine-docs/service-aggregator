@@ -2,6 +2,7 @@ package com.ninedocs.serviceaggregator.controller.article;
 
 import com.ninedocs.serviceaggregator.client.article.articlequery.ArticleQueryClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class ArticleController {
 
   private final ArticleQueryClient articleQueryClient;
 
+  @Operation(summary = "문제 본문 조회")
   @GetMapping("/api/v1/article/{articleId}")
   public Mono<ResponseEntity<ApiResponse<String>>> getArticle(
       @PathVariable("articleId") Long articleId
