@@ -2,7 +2,6 @@ package com.ninedocs.serviceaggregator.controller.article;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkQueryClient;
-import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkIdResponse;
 import com.ninedocs.serviceaggregator.controller.article.dto.BookmarkResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,17 +34,12 @@ public class ArticleBookmarkController {
       Long userId = jwtDecoder.decode(authToken).getUserId();
 
       return bookmarkQueryClient.getArticleBookmarkExist(userId, articleId)
-          .map(bookmarkOptional -> {
-                log.debug("# bookmarkOptional.getId() : {}",
-                    bookmarkOptional.map(BookmarkIdResponse::getId));
-                return bookmarkOptional.map(bookmarkIdResponse ->
-                        new BookmarkResponse(bookmarkIdResponse.getId()));
-              }
-          )
-          .map(bookmarkResponseOptional -> {
-            log.debug("# bookmarkResponse : {}", bookmarkResponseOptional);
-            return ResponseEntity.ok(ApiResponse.success(bookmarkResponseOptional.orElse(null)));
-          });
+          .map(bookmarkOptional -> bookmarkOptional.map(bookmarkIdResponse ->
+              new BookmarkResponse(bookmarkIdResponse.getId())
+          ))
+          .map(bookmarkResponseOptional -> ResponseEntity.ok(ApiResponse.success(
+              bookmarkResponseOptional.orElse(null)
+          )));
 
     } catch (ExpiredJwtException e) {
       log.warn("# 만료된 토큰으로 요청 발생 - /api/v1/article/{}/bookmark", articleId);

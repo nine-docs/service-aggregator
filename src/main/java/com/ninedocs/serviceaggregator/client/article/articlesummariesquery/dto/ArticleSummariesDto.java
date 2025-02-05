@@ -17,7 +17,7 @@ public class ArticleSummariesDto {
     return this.map.containsKey(articleId);
   }
 
-  public ArticleSummaryResponse getArticleSummary(Long articleId) {
+  public ArticleSummaryResponse get(Long articleId) {
     return map.get(articleId);
   }
 }

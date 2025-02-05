@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BookmarkArticleResponse {
+public class BookmarkedArticleResponse {
 
   private Long bookmarkId;
   private ArticleDto article;
