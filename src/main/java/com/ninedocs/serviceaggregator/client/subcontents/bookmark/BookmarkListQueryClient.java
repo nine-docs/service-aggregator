@@ -2,7 +2,7 @@ package com.ninedocs.serviceaggregator.client.subcontents.bookmark;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
-import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkListQueryClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkSummaryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,7 +20,7 @@ public class BookmarkListQueryClient {
 
   private final WebClient subContentsWebClient;
 
-  public Mono<List<BookmarkListQueryClientResponse>> getBookmarks(Long userId) {
+  public Mono<List<BookmarkSummaryResponse>> getBookmarks(Long userId) {
     return subContentsWebClient.get()
         .uri(uriBuilder -> uriBuilder
             .path(URI_PATH)
@@ -28,7 +28,7 @@ public class BookmarkListQueryClient {
             .build())
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<List<BookmarkListQueryClientResponse>>>() {
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<List<BookmarkSummaryResponse>>>() {
         })
         .flatMap(domainResponse -> {
           if (!domainResponse.getSuccess()) {

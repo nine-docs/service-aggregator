@@ -2,7 +2,7 @@ package com.ninedocs.serviceaggregator.controller.article;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.bookmark.BookmarkQueryClient;
-import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkQueryClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.bookmark.dto.BookmarkIdResponse;
 import com.ninedocs.serviceaggregator.controller.article.dto.BookmarkResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -36,9 +36,10 @@ public class ArticleBookmarkController {
 
       return bookmarkQueryClient.getArticleBookmarkExist(userId, articleId)
           .map(bookmarkOptional -> {
-                log.debug("# bookmarkOptional.getId() : {}", bookmarkOptional.map(BookmarkQueryClientResponse::getId));
-                return bookmarkOptional.map(bookmarkQueryClientResponse ->
-                        new BookmarkResponse(bookmarkQueryClientResponse.getId()));
+                log.debug("# bookmarkOptional.getId() : {}",
+                    bookmarkOptional.map(BookmarkIdResponse::getId));
+                return bookmarkOptional.map(bookmarkIdResponse ->
+                        new BookmarkResponse(bookmarkIdResponse.getId()));
               }
           )
           .map(bookmarkResponseOptional -> {
