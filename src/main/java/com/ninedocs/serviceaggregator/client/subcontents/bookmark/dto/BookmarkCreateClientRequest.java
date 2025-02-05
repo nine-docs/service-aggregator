@@ -8,4 +8,5 @@ import lombok.Getter;
 public class BookmarkCreateClientRequest {
 
   private Long articleId;
+  private Long userId;
 }
