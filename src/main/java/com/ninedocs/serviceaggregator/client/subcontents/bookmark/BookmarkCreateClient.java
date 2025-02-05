@@ -22,7 +22,7 @@ public class BookmarkCreateClient {
   private final WebClient subContentsWebClient;
 
   public Mono<BookmarkCreateClientResponse> createBookmark(Long userId, Long articleId) {
-    final String uriPath = "/api/v1/bookmark/" + userId;
+    final String uriPath = "/api/v1/subcontents/bookmark";
 
     return subContentsWebClient.post()
         .uri(uriBuilder -> uriBuilder
@@ -30,6 +30,7 @@ public class BookmarkCreateClient {
             .build())
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(BookmarkCreateClientRequest.builder()
+            .userId(userId)
             .articleId(articleId)
             .build())
         .retrieve()
@@ -38,6 +39,7 @@ public class BookmarkCreateClient {
         .flatMap(domainResponse -> {
           if (!domainResponse.getSuccess()) {
             // Todo API 수정되면 반영할것
+            log.debug("# error code : {}", domainResponse.getErrorCode());
             return Mono.error(
                 new Unknown2xxErrorException(DOMAIN_NAME, uriPath, domainResponse.getErrorCode())
             );
