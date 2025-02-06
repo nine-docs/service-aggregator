@@ -95,7 +95,7 @@ pipeline {
                         #!/bin/bash
                         echo "Cloning Helm repository..."
                         git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/nine-docs/infra-manifest.git
-                        cd infra-manifest/charts/user
+                        cd infra-manifest/charts/service-aggregator
                         echo "Updating values.yaml with tag: ${TAG}"
                         sed -i "s/tag:.*/tag: ${TAG}/" values.yaml
                         echo "Committing and pushing changes..."
