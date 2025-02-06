@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Set TAG to the short commit hash
-                    env.TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    env.TAG = "V-" + sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                     echo "Git Commit Hash: ${env.TAG}"
                 }
             }
