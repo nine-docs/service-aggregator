@@ -9,5 +9,5 @@ public class AuthorResponse {
 
   private Long id;
   private String nickname;
-  private boolean isMe;
+  private Boolean isMe;
 }
