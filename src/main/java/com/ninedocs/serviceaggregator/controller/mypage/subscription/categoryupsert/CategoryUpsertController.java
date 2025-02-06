@@ -3,7 +3,7 @@ package com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryup
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.article.usercategoryupsert.UserCategoryUpsertClient;
 import com.ninedocs.serviceaggregator.client.article.usercategoryupsert.dto.UserCategoryUpsertRequest;
-import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.categoryupsert.dto.CategoryUpdateResponse;
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 public class CategoryUpsertController {
 
   private final JwtDecoder jwtDecoder;
-  private final UserProfileClient userProfileClient;
+  private final UserProfileQueryClient userProfileQueryClient;
   private final UserCategoryUpsertClient userCategoryUpsertClient;
 
   @Operation(summary = "내 구독 카테고리 생성/수정")
@@ -36,7 +36,7 @@ public class CategoryUpsertController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return userProfileClient.userProfile(userId)
+    return userProfileQueryClient.userProfile(userId)
         .flatMap(userProfile -> userCategoryUpsertClient.upsertUserCategory(
             UserCategoryUpsertRequest.builder()
                 .userId(userId)

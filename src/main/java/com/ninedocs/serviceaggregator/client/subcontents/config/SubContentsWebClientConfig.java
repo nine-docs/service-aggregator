@@ -20,7 +20,6 @@ public class SubContentsWebClientConfig {
 
   @Bean
   public WebClient subContentsWebClient(SubContentsWebClientProperties properties) {
-    System.out.println("### 여기 !! " + properties.getUrl());
     return webClientBuilder
         .baseUrl(properties.getUrl())
         .filter(errorHandler())

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class UserProfileClient {
+public class UserProfileQueryClient {
 
   private static final String DOMAIN_NAME = "user";
 

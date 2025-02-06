@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.article;
+package com.ninedocs.serviceaggregator.controller.article.article;
 
 import com.ninedocs.serviceaggregator.client.article.articlequery.ArticleQueryClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
