@@ -11,6 +11,7 @@ import com.ninedocs.serviceaggregator.controller.article.comment.create.dto.Comm
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class CommentCreateController {
   public Mono<ResponseEntity<ApiResponse<CommentResponse>>> create(
       @PathVariable Long articleId,
       @RequestHeader("Authentication") String authToken,
-      @RequestBody CommentCreateRequest request
+      @Valid @RequestBody CommentCreateRequest request
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -82,7 +83,7 @@ public class CommentQueryController {
                 .nickname(userProfileBulkDto.getNicknameByUserId(
                     comment.getAuthorId(), "알수없는 사용자"
                 ))
-                .isMe(comment.getAuthorId().equals(userId))
+                .isMe(Objects.equals(comment.getAuthorId(), userId))
                 .build())
             .reply(ReplyResponse.builder()
                 .count(comment.getReply().getCount())
