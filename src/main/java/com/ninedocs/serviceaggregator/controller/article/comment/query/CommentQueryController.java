@@ -5,6 +5,7 @@ import com.ninedocs.serviceaggregator.client.subcontents.comment.query.CommentQu
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentCursorResponse.CommentClientResponse;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryClient;
+import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
@@ -56,24 +57,9 @@ public class CommentQueryController {
               .toList();
 
           return userProfileBulkQueryClient.getUserProfiles(userIds)
-              .map(userProfiles -> commentCursorResponse.getItems().stream()
-                  .map(comment -> CommentResponse.builder()
-                      .commentId(comment.getCommentId())
-                      .author(AuthorResponse.builder()
-                          .id(comment.getAuthorId())
-                          .nickname(userProfiles.getNicknameByUserId(
-                              comment.getAuthorId(), "알수없는 사용자"
-                          ))
-                          .isMe(comment.getAuthorId().equals(userId))
-                          .build())
-                      .reply(ReplyResponse.builder()
-                          .count(comment.getReply().getCount())
-                          .build())
-                      .content(comment.getContent())
-                      .createdAt(comment.getCreatedAt())
-                      .updatedAt(comment.getUpdatedAt())
-                      .build())
-                  .toList())
+              .map(userProfiles ->
+                  toCommentResponses(commentCursorResponse.getItems(), userProfiles, userId)
+              )
               .map(comments ->
                   ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
                       comments,
@@ -82,5 +68,30 @@ public class CommentQueryController {
                           : comments.get(comments.size() - 1).getCommentId()
                   ))));
         });
+  }
+
+  private List<CommentResponse> toCommentResponses(
+      List<CommentClientResponse> commentClientResponses,
+      UserProfileBulkDto userProfileBulkDto,
+      Long userId
+  ) {
+    return commentClientResponses.stream()
+        .map(comment -> CommentResponse.builder()
+            .commentId(comment.getCommentId())
+            .author(AuthorResponse.builder()
+                .id(comment.getAuthorId())
+                .nickname(userProfileBulkDto.getNicknameByUserId(
+                    comment.getAuthorId(), "알수없는 사용자"
+                ))
+                .isMe(comment.getAuthorId().equals(userId))
+                .build())
+            .reply(ReplyResponse.builder()
+                .count(comment.getReply().getCount())
+                .build())
+            .content(comment.getContent())
+            .createdAt(comment.getCreatedAt())
+            .updatedAt(comment.getUpdatedAt())
+            .build())
+        .toList();
   }
 }
