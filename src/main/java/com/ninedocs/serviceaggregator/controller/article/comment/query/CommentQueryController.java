@@ -6,8 +6,8 @@ import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.Comme
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryClient;
 import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;

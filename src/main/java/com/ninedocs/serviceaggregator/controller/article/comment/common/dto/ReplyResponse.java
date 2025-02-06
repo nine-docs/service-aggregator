@@ -6,19 +6,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CommentResponse {
+public class ReplyResponse {
 
-  private Long commentId;
+  private Long replyId;
   private AuthorResponse author;
-  private ReplyResponse reply;
   private String content;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-
-  @Builder
-  @Getter
-  public static class ReplyResponse {
-
-    private int count;
-  }
 }
