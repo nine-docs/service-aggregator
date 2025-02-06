@@ -114,5 +114,10 @@ pipeline {
                 deleteDir() // 작업 공간 정리
             }
         }
+        stage('Docker Prune') {
+            steps {
+                sh "docker system prune -af --filter until=30m"
+            }
+        }
     }
 }
