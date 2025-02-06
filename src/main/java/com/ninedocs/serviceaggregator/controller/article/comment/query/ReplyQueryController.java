@@ -1,14 +1,13 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.query;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.query.CommentQueryClient;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentCursorResponse.CommentClientResponse;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.ReplyQueryClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.ReplyCursorResponse.ReplyClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.ReplyQueryRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryClient;
 import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,68 +27,65 @@ import reactor.core.publisher.Mono;
 @Tag(name = "댓글/대댓글")
 @RestController
 @RequiredArgsConstructor
-public class CommentQueryController {
+public class ReplyQueryController {
 
   private final JwtDecoder jwtDecoder;
-  private final CommentQueryClient commentQueryClient;
+  private final ReplyQueryClient replyQueryClient;
   private final UserProfileBulkQueryClient userProfileBulkQueryClient;
 
-  @Operation(summary = "댓글 목록 조회 페이지네이션")
-  @GetMapping("/api/v1/article/{articleId}/comments")
-  public Mono<ResponseEntity<ApiResponse<CursorPageResponse<CommentResponse, Long>>>> getComments(
+  @Operation(summary = "대댓글 목록 조회 페이지네이션")
+  @GetMapping("/api/v1/article/{articleId}/comment/{commentId}/replies")
+  public Mono<ResponseEntity<ApiResponse<CursorPageResponse<ReplyResponse, Long>>>> getReplies(
       @PathVariable Long articleId,
-      @Parameter(description = "이전 페이지 마지막 댓글 (첫페이지 조회 시 null)") @RequestParam(required = false) Long cursor,
+      @PathVariable Long commentId,
+      @Parameter(description = "이전 페이지 마지막 대댓글 (첫페이지 조회 시 null)") @RequestParam(required = false) Long cursor,
       @Parameter(description = "페이지 당 아이템 최대 갯수") @RequestParam(defaultValue = "20") int limit,
       @Parameter(description = "내 댓글 여부 계산 용 토큰, 생략 가능") @RequestHeader(value = "Authentication", required = false) String authToken
   ) {
     final Long userId = jwtDecoder.decodeWithoutException(authToken).getUserId();
 
-    return commentQueryClient.getComments(
-            CommentQueryRequest.builder()
-                .articleId(articleId)
+    return replyQueryClient.getReplies(
+            ReplyQueryRequest.builder()
+                .commentId(commentId)
                 .cursor(cursor == null ? 0L : cursor)
                 .limit(limit)
                 .build()
         )
-        .flatMap(commentCursorResponse -> {
-          List<Long> authorIds = commentCursorResponse.getItems().stream()
-              .map(CommentClientResponse::getAuthorId)
+        .flatMap(replyCursorResponse -> {
+          List<Long> authorIds = replyCursorResponse.getItems().stream()
+              .map(ReplyClientResponse::getAuthorId)
               .toList();
-
           return userProfileBulkQueryClient.getUserProfiles(authorIds)
-              .map(userProfiles -> toCommentResponses(
-                  commentCursorResponse.getItems(), userProfiles, userId
+              .map(userProfiles -> toReplyResponse(
+                  replyCursorResponse.getItems(), userProfiles, userId
               ))
-              .map(comments -> ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
-                  comments,
-                  CollectionUtils.isEmpty(comments)
+              .map(replies -> ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
+                  replies,
+                  CollectionUtils.isEmpty(replies)
                       ? null
-                      : comments.get(comments.size() - 1).getCommentId()
+                      : replies.get(replies.size() - 1).getReplyId()
               ))));
         });
   }
 
-  private List<CommentResponse> toCommentResponses(
-      List<CommentClientResponse> commentClientResponses,
+  private List<ReplyResponse> toReplyResponse(
+      List<ReplyClientResponse> replyClientResponses,
       UserProfileBulkDto userProfileBulkDto,
       Long userId
   ) {
-    return commentClientResponses.stream()
-        .map(comment -> CommentResponse.builder()
-            .commentId(comment.getCommentId())
+    return replyClientResponses.stream()
+        .map(reply -> ReplyResponse.builder()
+            .replyId(reply.getReplyId())
             .author(AuthorResponse.builder()
-                .id(comment.getAuthorId())
+                .id(reply.getAuthorId())
                 .nickname(userProfileBulkDto.getNicknameByUserId(
-                    comment.getAuthorId(), "알수없는 사용자"
+                    reply.getAuthorId(), "알수없는 사용자"
                 ))
-                .isMe(comment.getAuthorId().equals(userId))
+                .isMe(reply.getAuthorId().equals(userId))
                 .build())
-            .reply(ReplyResponse.builder()
-                .count(comment.getReply().getCount())
-                .build())
-            .content(comment.getContent())
-            .createdAt(comment.getCreatedAt())
-            .updatedAt(comment.getUpdatedAt())
+            .content(reply.getContent())
+            .createdAt(reply.getCreatedAt())
+            .updatedAt(reply.getUpdatedAt())
             .build())
         .toList();
   }
