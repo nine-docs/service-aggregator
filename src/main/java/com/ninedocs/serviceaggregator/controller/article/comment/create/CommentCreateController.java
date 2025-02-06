@@ -3,7 +3,7 @@ package com.ninedocs.serviceaggregator.controller.article.comment.create;
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.create.CommentCreateClient;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto.CommentCreateClientRequest;
-import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
@@ -28,7 +28,7 @@ public class CommentCreateController {
 
   private final JwtDecoder jwtDecoder;
   private final CommentCreateClient commentCreateClient;
-  private final UserProfileClient userProfileClient;
+  private final UserProfileQueryClient userProfileQueryClient;
 
   @Operation(summary = "댓글 작성")
   @PostMapping("/api/v1/article/{articleId}/comment")
@@ -47,7 +47,7 @@ public class CommentCreateController {
                 .content(request.getContent())
                 .build()
         ),
-        userProfileClient.userProfile(userId),
+        userProfileQueryClient.userProfile(userId),
         (commentCreateResponse, userProfile) ->
             ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
                 CommentResponse.builder()

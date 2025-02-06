@@ -3,7 +3,7 @@ package com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleup
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.article.userscheduleupsert.UserScheduleUpsertClient;
 import com.ninedocs.serviceaggregator.client.article.userscheduleupsert.dto.UserScheduleUpsertRequest;
-import com.ninedocs.serviceaggregator.client.user.profile.UserProfileClient;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleRequest;
 import com.ninedocs.serviceaggregator.controller.mypage.subscription.scheduleupsert.dto.UpdateScheduleResponse;
@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public class ScheduleUpsertController {
 
   private final JwtDecoder jwtDecoder;
-  private final UserProfileClient userProfileClient;
+  private final UserProfileQueryClient userProfileQueryClient;
   private final UserScheduleUpsertClient userScheduleUpsertClient;
 
   @Operation(summary = "내 메일 수신 주기 생성/수정")
@@ -35,7 +35,7 @@ public class ScheduleUpsertController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return userProfileClient.userProfile(userId)
+    return userProfileQueryClient.userProfile(userId)
         .flatMap(userProfile -> userScheduleUpsertClient.upsertUserSchedule(
             UserScheduleUpsertRequest.builder()
                 .userId(userId)

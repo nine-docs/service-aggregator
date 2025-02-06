@@ -2,7 +2,9 @@ package com.ninedocs.serviceaggregator.controller.article.comment.query;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.CommentQueryClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentCursorResponse.CommentClientResponse;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
@@ -11,6 +13,7 @@ import com.ninedocs.serviceaggregator.controller.common.response.CursorPageRespo
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -28,6 +31,7 @@ public class CommentQueryController {
 
   private final JwtDecoder jwtDecoder;
   private final CommentQueryClient commentQueryClient;
+  private final UserProfileBulkQueryClient userProfileBulkQueryClient;
 
   @Operation(summary = "댓글 목록 조회 페이지네이션")
   @GetMapping("/api/v1/article/{articleId}/comments")
@@ -47,14 +51,19 @@ public class CommentQueryController {
                 .build()
         )
         .flatMap(commentCursorResponse -> {
-          // Todo user profile bulk 조회
-          return Mono.just(
-              commentCursorResponse.getItems().stream()
+          List<Long> userIds = commentCursorResponse.getItems().stream()
+              .map(CommentClientResponse::getAuthorId)
+              .toList();
+
+          return userProfileBulkQueryClient.getUserProfiles(userIds)
+              .map(userProfiles -> commentCursorResponse.getItems().stream()
                   .map(comment -> CommentResponse.builder()
                       .commentId(comment.getCommentId())
                       .author(AuthorResponse.builder()
                           .id(comment.getAuthorId())
-                          .nickname(null)
+                          .nickname(userProfiles.getNicknameByUserId(
+                              comment.getAuthorId(), "알수없는 사용자"
+                          ))
                           .isMe(comment.getAuthorId().equals(userId))
                           .build())
                       .reply(ReplyResponse.builder()
@@ -64,16 +73,14 @@ public class CommentQueryController {
                       .createdAt(comment.getCreatedAt())
                       .updatedAt(comment.getUpdatedAt())
                       .build())
-                  .toList()
-          );
-        })
-        .map(comments ->
-            ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
-                comments,
-                CollectionUtils.isEmpty(comments)
-                    ? null
-                    : comments.get(comments.size() - 1).getCommentId()
-            )))
-        );
+                  .toList())
+              .map(comments ->
+                  ResponseEntity.ok(ApiResponse.success(CursorPageResponse.of(
+                      comments,
+                      CollectionUtils.isEmpty(comments)
+                          ? null
+                          : comments.get(comments.size() - 1).getCommentId()
+                  ))));
+        });
   }
 }
