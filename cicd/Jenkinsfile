@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB_IMAGE_REPO =  "ninedocs-service-aggregator"
-        TAG = "${env.BUILD_ID}"
     }
     options {
         disableConcurrentBuilds() // 동시에 빌드 실행 방지
@@ -31,6 +30,15 @@ pipeline {
                 }
                 failure {
                     sh 'echo "# gradlew test failure"'
+                }
+            }
+        }
+        stage('Set Tag') {
+            steps {
+                script {
+                    // Set TAG to the short commit hash
+                    env.TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    echo "Git Commit Hash: ${env.TAG}"
                 }
             }
         }
@@ -66,8 +74,8 @@ pipeline {
             }
             steps {
                 sh "echo $DOCKER_HUB_CREDENTIAL_PSW | docker login -u $DOCKER_HUB_CREDENTIAL_USR --password-stdin"
-                sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
-                sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
+                sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
                 sh "docker logout"
             }
             post {
@@ -77,6 +85,33 @@ pipeline {
                 failure {
                     sh 'echo "# image push failure"'
                 }
+            }
+        }
+        stage('Update Helm values.yaml') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'git-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh '''
+                        #!/bin/bash
+                        echo "Cloning Helm repository..."
+                        git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/nine-docs/infra-manifest.git
+                        cd infra-manifest/charts/service-aggregator
+                        echo "Updating values.yaml with tag: ${TAG}"
+                        sed -i "s/tag:.*/tag: ${TAG}/" values.yaml
+                        echo "Committing and pushing changes..."
+                        git config user.name "jenkins-john"
+                        git config user.email "john3210of@gmail.com"
+                        git add values.yaml
+                        git commit -m "Update tag to ${TAG}" || echo "No changes to commit"
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/nine-docs/infra-manifest.git
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Clean Up Workspace After Build') {
+            steps {
+                deleteDir() // 작업 공간 정리
             }
         }
     }
