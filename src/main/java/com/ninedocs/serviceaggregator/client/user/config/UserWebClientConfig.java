@@ -34,7 +34,7 @@ public class UserWebClientConfig {
    */
   private ExchangeFilterFunction errorHandler() {
     return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-      if (clientResponse.statusCode().isError()) {
+      if (clientResponse.statusCode().is4xxClientError()) {
         return clientResponse.bodyToMono(UserErrorResponse.class)
             .flatMap(errorBody -> Mono.error(
                 ApiErrorException.builder()
@@ -42,6 +42,17 @@ public class UserWebClientConfig {
                     .requestUri(clientResponse.request().getURI())
                     .statusCode(clientResponse.statusCode())
                     .reason(errorBody.getMessage())
+                    .build()
+            ));
+      }
+      if (clientResponse.statusCode().is5xxServerError()) {
+        return clientResponse.bodyToMono(String.class)
+            .flatMap(errorBody -> Mono.error(
+                ApiErrorException.builder()
+                    .domainName("User")
+                    .requestUri(clientResponse.request().getURI())
+                    .statusCode(clientResponse.statusCode())
+                    .reason(errorBody)
                     .build()
             ));
       }
