@@ -55,42 +55,38 @@ pipeline {
                 }
             }
         }
-        stage("Docker Image Build and Push") {
+        stage("Docker Build") {
+            steps {
+                sh "docker build -t $DOCKER_HUB_IMAGE_REPO -f cicd/DockerfileWithoutBuild build/libs"
+            }
+            post {
+                success {
+                    sh 'echo "# docker build success"'
+                }
+                failure {
+                    sh 'echo "# docker build failure"'
+                }
+            }
+        }
+        stage("Push Image") {
             environment {
                 DOCKER_HUB_CREDENTIAL = credentials('yerim_dockerhub')
             }
             steps {
-//                 sh "docker build -t $DOCKER_HUB_IMAGE_REPO -f cicd/DockerfileWithoutBuild build/libs"
-                sh "docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG} -f cicd/DockerfileWithoutBuild build/libs --push"
+                sh "echo $DOCKER_HUB_CREDENTIAL_PSW | docker login -u $DOCKER_HUB_CREDENTIAL_USR --password-stdin"
+                sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
+                sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
+                sh "docker logout"
             }
             post {
                 success {
-                    sh 'echo "# docker build and push success"'
+                    sh 'echo "# image push success"'
                 }
                 failure {
-                    sh 'echo "# docker build and push failure"'
+                    sh 'echo "# image push failure"'
                 }
             }
         }
-//         stage("Push Image") {
-//             environment {
-//                 DOCKER_HUB_CREDENTIAL = credentials('yerim_dockerhub')
-//             }
-//             steps {
-//                 sh "echo $DOCKER_HUB_CREDENTIAL_PSW | docker login -u $DOCKER_HUB_CREDENTIAL_USR --password-stdin"
-//                 sh "docker tag $DOCKER_HUB_IMAGE_REPO $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
-//                 sh "docker push $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG}"
-//                 sh "docker logout"
-//             }
-//             post {
-//                 success {
-//                     sh 'echo "# image push success"'
-//                 }
-//                 failure {
-//                     sh 'echo "# image push failure"'
-//                 }
-//             }
-//         }
         stage('Update Helm values.yaml') {
             steps {
                 script {
