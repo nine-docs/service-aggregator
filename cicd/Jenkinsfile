@@ -58,10 +58,22 @@ pipeline {
         stage("Docker Image Build and Push") {
             environment {
                 DOCKER_HUB_CREDENTIAL = credentials('yerim_dockerhub')
+                DOCKER_BUILDKIT = "1"
             }
             steps {
 //                 sh "docker build -t $DOCKER_HUB_IMAGE_REPO -f cicd/DockerfileWithoutBuild build/libs"
-                sh "docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG} -f cicd/DockerfileWithoutBuild build/libs --push"
+                sh '''
+                # Buildx를 위한 새로운 빌더 생성 및 사용
+                docker buildx create --use --name mybuilder || echo "Buildx builder already exists"
+
+                # docker buildx가 정상적으로 동작하는지 확인
+                docker buildx ls
+
+                # Docker 이미지 빌드 및 푸시
+                docker buildx build --platform linux/amd64,linux/arm64 \
+                    -t $DOCKER_HUB_CREDENTIAL_USR/$DOCKER_HUB_IMAGE_REPO:${env.TAG} \
+                    -f cicd/DockerfileWithoutBuild build/libs --push
+                '''
             }
             post {
                 success {
