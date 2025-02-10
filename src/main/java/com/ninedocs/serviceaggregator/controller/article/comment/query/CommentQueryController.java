@@ -98,6 +98,7 @@ public class CommentQueryController {
                 .build())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())
+            .deletedAt(comment.getDeletedAt())
             .build())
         .toList();
   }

@@ -49,7 +49,7 @@ public class CommentCreateController {
                 .content(request.getContent())
                 .build()
         ),
-        userProfileQueryClient.userProfile(userId),
+        userProfileQueryClient.getUserProfile(userId),
         (commentCreateResponse, userProfile) ->
             ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
                 CommentResponse.builder()
@@ -69,6 +69,7 @@ public class CommentCreateController {
                         .build())
                     .createdAt(commentCreateResponse.getCreatedAt())
                     .updatedAt(commentCreateResponse.getCreatedAt())
+                    .deletedAt(null)
                     .build()
             ))
     );

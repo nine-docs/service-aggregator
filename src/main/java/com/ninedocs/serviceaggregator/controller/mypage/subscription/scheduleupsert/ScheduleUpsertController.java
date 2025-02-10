@@ -35,7 +35,7 @@ public class ScheduleUpsertController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return userProfileQueryClient.userProfile(userId)
+    return userProfileQueryClient.getUserProfile(userId)
         .flatMap(userProfile -> userScheduleUpsertClient.upsertUserSchedule(
             UserScheduleUpsertRequest.builder()
                 .userId(userId)

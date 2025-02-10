@@ -18,7 +18,7 @@ public class UserProfileQueryClient {
 
   private final WebClient userWebClient;
 
-  public Mono<UserProfileResponse> userProfile(Long userId) {
+  public Mono<UserProfileResponse> getUserProfile(Long userId) {
     final String uri = "/api/v1/user/" + userId;
 
     return userWebClient.get()

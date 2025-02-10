@@ -15,6 +15,7 @@ public class CommentResponse {
   private LikeResponse like;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private LocalDateTime deletedAt;
 
   @Builder
   @Getter
