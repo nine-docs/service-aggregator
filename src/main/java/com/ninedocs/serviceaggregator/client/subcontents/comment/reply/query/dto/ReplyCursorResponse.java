@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

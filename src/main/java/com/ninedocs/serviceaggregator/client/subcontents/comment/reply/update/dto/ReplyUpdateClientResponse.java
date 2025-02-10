@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.update.dto;
 
 import java.time.LocalDateTime;
 import lombok.Getter;

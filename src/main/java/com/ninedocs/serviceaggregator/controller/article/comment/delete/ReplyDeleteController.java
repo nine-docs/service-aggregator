@@ -1,7 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.delete;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.delete.ReplyDeleteClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.delete.ReplyDeleteClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

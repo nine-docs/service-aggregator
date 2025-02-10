@@ -1,11 +1,11 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class CommentUpdateClientRequest {
+public class ReplyCreateClientRequest {
 
   private Long commentId;
   private Long userId;

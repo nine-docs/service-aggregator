@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto;
 
 import lombok.Builder;
 import lombok.Getter;

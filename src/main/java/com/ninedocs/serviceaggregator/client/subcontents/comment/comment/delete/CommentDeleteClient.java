@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.delete;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.comment.delete;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
@@ -10,18 +10,18 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyDeleteClient {
+public class CommentDeleteClient {
 
   private static final String DOMAIN_NAME = "sub-contents";
-  private static final String URI_PATH = "/api/v1/subcontents/reply";
+  private static final String URI_PATH = "/api/v1/subcontents/comment";
 
   private final WebClient subContentsWebClient;
 
-  public Mono<Void> deleteReply(Long replyId, Long userId) {
+  public Mono<Void> deleteComment(Long commentId, Long userId) {
     return subContentsWebClient.delete()
         .uri(uriBuilder -> uriBuilder
             .path(URI_PATH)
-            .queryParam("replyId", replyId)
+            .queryParam("commentId", commentId)
             .queryParam("userId", userId)
             .build())
         .retrieve()

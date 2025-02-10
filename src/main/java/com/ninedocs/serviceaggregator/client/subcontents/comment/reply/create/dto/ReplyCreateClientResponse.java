@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
@@ -6,8 +6,9 @@ import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentCreateResponse {
+public class ReplyCreateClientResponse {
 
+  private Long replyId;
   private Long commentId;
   private String content;
   private LocalDateTime createdAt;

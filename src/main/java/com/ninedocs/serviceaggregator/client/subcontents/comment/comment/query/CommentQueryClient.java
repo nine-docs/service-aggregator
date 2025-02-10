@@ -1,9 +1,9 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.query;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.comment.query;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentCursorResponse;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.query.dto.CommentCursorResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.query.dto.CommentQueryRequest;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

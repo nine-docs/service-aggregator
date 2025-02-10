@@ -1,7 +1,7 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.delete;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.delete.CommentDeleteClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.delete.CommentDeleteClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

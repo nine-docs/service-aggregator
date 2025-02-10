@@ -1,9 +1,9 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.create;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto.ReplyCreateClientRequest;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto.ReplyCreateClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create.dto.ReplyCreateClientRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create.dto.ReplyCreateClientResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;

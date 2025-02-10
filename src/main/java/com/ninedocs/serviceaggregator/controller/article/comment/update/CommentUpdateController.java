@@ -1,8 +1,8 @@
 package com.ninedocs.serviceaggregator.controller.article.comment.update;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.update.CommentUpdateClient;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto.CommentUpdateClientRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.update.CommentUpdateClient;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.update.dto.CommentUpdateClientRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;

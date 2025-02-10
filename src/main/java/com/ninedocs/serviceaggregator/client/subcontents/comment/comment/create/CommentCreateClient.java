@@ -1,9 +1,9 @@
-package com.ninedocs.serviceaggregator.client.subcontents.comment.update;
+package com.ninedocs.serviceaggregator.client.subcontents.comment.comment.create;
 
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto.ReplyUpdateClientRequest;
-import com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto.ReplyUpdateClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.create.dto.CommentCreateClientRequest;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.create.dto.CommentCreateResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,26 +15,26 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ReplyUpdateClient {
+public class CommentCreateClient {
 
   private static final String DOMAIN_NAME = "sub-contents";
-  private static final String URI_PATH = "/api/v1/subcontents/reply";
+  private static final String URI_PATH = "/api/v1/subcontents/comment";
 
   private final WebClient subContentsWebClient;
 
-  public Mono<ReplyUpdateClientResponse> updateReply(ReplyUpdateClientRequest request) {
-    return subContentsWebClient.put()
+  public Mono<CommentCreateResponse> createComment(CommentCreateClientRequest request) {
+    return subContentsWebClient.post()
         .uri(uriBuilder -> uriBuilder
             .path(URI_PATH)
             .build())
         .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaType.APPLICATION_JSON)
         .bodyValue(request)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<ReplyUpdateClientResponse>>() {
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<CommentCreateResponse>>() {
         })
         .flatMap(domainResponse -> {
           if (!domainResponse.getSuccess()) {
+            log.debug("# error code : {}", domainResponse.getErrorCode());
             return Mono.error(
                 new Unknown2xxErrorException(DOMAIN_NAME, URI_PATH, domainResponse.getErrorCode())
             );
