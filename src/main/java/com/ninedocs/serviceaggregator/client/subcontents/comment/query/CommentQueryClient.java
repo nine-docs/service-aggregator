@@ -4,6 +4,7 @@ import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentCursorResponse;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.query.dto.CommentQueryRequest;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,12 +25,19 @@ public class CommentQueryClient {
 
   public Mono<CommentCursorResponse> getComments(CommentQueryRequest request) {
     return subContentsWebClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path(URI_PATH)
-            .queryParam("articleId", request.getArticleId())
-            .queryParam("cursor", request.getCursor())
-            .queryParam("limit", request.getLimit())
-            .build())
+        .uri(uriBuilder -> {
+          uriBuilder = uriBuilder
+              .path(URI_PATH)
+              .queryParam("articleId", request.getArticleId())
+              .queryParam("cursor", request.getCursor())
+              .queryParam("limit", request.getLimit());
+
+          uriBuilder = Objects.nonNull(request.getUserId())
+              ? uriBuilder.queryParam("userId", request.getUserId())
+              : uriBuilder;
+
+          return uriBuilder.build();
+        })
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<CommentCursorResponse>>() {

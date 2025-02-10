@@ -12,6 +12,7 @@ public class CommentResponse {
   private AuthorResponse author;
   private ReplyResponse reply;
   private String content;
+  private LikeResponse like;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -20,5 +21,13 @@ public class CommentResponse {
   public static class ReplyResponse {
 
     private int count;
+  }
+
+  @Builder
+  @Getter
+  public static class LikeResponse {
+
+    private Long count;
+    private Boolean isUserLike;
   }
 }
