@@ -18,7 +18,16 @@ public class ReplyCursorResponse {
     private Long replyId;
     private Long authorId;
     private String content;
+    private LikeResponse like;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class LikeResponse {
+
+      private int count;
+      private Boolean isUserLike;
+    }
   }
 }

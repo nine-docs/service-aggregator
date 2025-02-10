@@ -6,6 +6,7 @@ import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.create.dt
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.reply.common.dto.ReplyResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.reply.common.dto.ReplyResponse.LikeResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.reply.create.dto.ReplyCreateRequest;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,6 +60,10 @@ public class ReplyCreateController {
                         .isMe(true)
                         .build())
                     .content(replyCreateResponse.getContent())
+                    .like(LikeResponse.builder()
+                        .count(0)
+                        .isUserLike(false)
+                        .build())
                     .createdAt(replyCreateResponse.getCreatedAt())
                     .updatedAt(replyCreateResponse.getCreatedAt())
                     .build()

@@ -8,6 +8,7 @@ import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryCl
 import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.reply.common.dto.ReplyResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.reply.common.dto.ReplyResponse.LikeResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,6 +86,10 @@ public class ReplyQueryController {
                 .isMe(Objects.equals(reply.getAuthorId(), userId))
                 .build())
             .content(reply.getContent())
+            .like(LikeResponse.builder()
+                .count(reply.getLike().getCount())
+                .isUserLike(reply.getLike().getIsUserLike())
+                .build())
             .createdAt(reply.getCreatedAt())
             .updatedAt(reply.getUpdatedAt())
             .build())
