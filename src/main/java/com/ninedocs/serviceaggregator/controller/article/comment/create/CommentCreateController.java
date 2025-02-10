@@ -6,6 +6,7 @@ import com.ninedocs.serviceaggregator.client.subcontents.comment.create.dto.Comm
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.LikeResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.create.dto.CommentCreateRequest;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
@@ -48,7 +49,7 @@ public class CommentCreateController {
                 .content(request.getContent())
                 .build()
         ),
-        userProfileQueryClient.userProfile(userId),
+        userProfileQueryClient.getUserProfile(userId),
         (commentCreateResponse, userProfile) ->
             ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
                 CommentResponse.builder()
@@ -62,8 +63,13 @@ public class CommentCreateController {
                     .reply(ReplyResponse.builder()
                         .count(0)
                         .build())
+                    .like(LikeResponse.builder()
+                        .count(0L)
+                        .isUserLike(false)
+                        .build())
                     .createdAt(commentCreateResponse.getCreatedAt())
                     .updatedAt(commentCreateResponse.getCreatedAt())
+                    .deletedAt(null)
                     .build()
             ))
     );

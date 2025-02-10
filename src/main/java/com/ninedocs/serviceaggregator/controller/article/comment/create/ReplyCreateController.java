@@ -48,7 +48,7 @@ public class ReplyCreateController {
                 .content(request.getContent())
                 .build()
         ),
-        userProfileQueryClient.userProfile(userId),
+        userProfileQueryClient.getUserProfile(userId),
         (replyCreateResponse, userProfile) ->
             ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
                 ReplyResponse.builder()

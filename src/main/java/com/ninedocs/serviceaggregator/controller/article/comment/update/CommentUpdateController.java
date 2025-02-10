@@ -3,8 +3,12 @@ package com.ninedocs.serviceaggregator.controller.article.comment.update;
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.update.CommentUpdateClient;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.update.dto.CommentUpdateClientRequest;
+import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.LikeResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.update.dto.CommentUpdateRequest;
-import com.ninedocs.serviceaggregator.controller.article.comment.update.dto.CommentUpdateResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,10 +29,11 @@ public class CommentUpdateController {
 
   private final JwtDecoder jwtDecoder;
   private final CommentUpdateClient commentUpdateClient;
+  private final UserProfileQueryClient userProfileQueryClient;
 
   @Operation(summary = "댓글 내용 수정")
   @PutMapping("/api/v1/article/{articleId}/comment/{commentId}")
-  public Mono<ResponseEntity<ApiResponse<CommentUpdateResponse>>> updateComment(
+  public Mono<ResponseEntity<ApiResponse<CommentResponse>>> updateComment(
       @PathVariable Long articleId,
       @PathVariable Long commentId,
       @Valid @RequestBody CommentUpdateRequest request,
@@ -36,21 +41,35 @@ public class CommentUpdateController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return commentUpdateClient.updateComment(
-            CommentUpdateClientRequest.builder()
-                .userId(userId)
-                .commentId(commentId)
-                .content(request.getContent())
-                .build()
-        )
-        .map(clientResponse ->
+    return Mono.zip(
+        commentUpdateClient.updateComment(CommentUpdateClientRequest.builder()
+            .userId(userId)
+            .commentId(commentId)
+            .content(request.getContent())
+            .build()),
+        userProfileQueryClient.getUserProfile(userId),
+        (comment, authorProfile) ->
             ResponseEntity.ok(ApiResponse.success(
-                CommentUpdateResponse.builder()
-                    .commentId(clientResponse.getCommentId())
-                    .content(clientResponse.getContent())
-                    .createdAt(clientResponse.getCreatedAt())
-                    .updatedAt(clientResponse.getUpdatedAt())
+                CommentResponse.builder()
+                    .commentId(comment.getCommentId())
+                    .author(AuthorResponse.builder()
+                        .id(comment.getAuthorId())
+                        .nickname(authorProfile.getNickname())
+                        .isMe(true)
+                        .build())
+                    .reply(ReplyResponse.builder()
+                        .count(comment.getReply().getCount())
+                        .build())
+                    .content(comment.getContent())
+                    .like(LikeResponse.builder()
+                        .count(comment.getLike().getCount())
+                        .isUserLike(comment.getLike().getIsUserLike())
+                        .build())
+                    .createdAt(comment.getCreatedAt())
+                    .updatedAt(comment.getUpdatedAt())
+                    .deletedAt(comment.getDeletedAt())
                     .build()
-            )));
+            ))
+    );
   }
 }

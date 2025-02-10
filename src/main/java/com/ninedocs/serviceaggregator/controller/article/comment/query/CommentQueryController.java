@@ -8,6 +8,7 @@ import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryCl
 import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.LikeResponse;
 import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
@@ -50,6 +51,7 @@ public class CommentQueryController {
                 .articleId(articleId)
                 .cursor(cursor == null ? 0L : cursor)
                 .limit(limit)
+                .userId(userId)
                 .build()
         )
         .flatMap(commentCursorResponse -> {
@@ -83,14 +85,20 @@ public class CommentQueryController {
                 .nickname(userProfileBulkDto.getNicknameByUserId(
                     comment.getAuthorId(), "알수없는 사용자"
                 ))
-                .isMe(Objects.equals(comment.getAuthorId(), userId))
+                .isMe(comment.getAuthorId() != null
+                    && Objects.equals(comment.getAuthorId(), userId))
                 .build())
             .reply(ReplyResponse.builder()
                 .count(comment.getReply().getCount())
                 .build())
             .content(comment.getContent())
+            .like(LikeResponse.builder()
+                .count(comment.getLike().getCount())
+                .isUserLike(comment.getLike().getIsUserLike())
+                .build())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())
+            .deletedAt(comment.getDeletedAt())
             .build())
         .toList();
   }

@@ -36,7 +36,7 @@ public class CategoryUpsertController {
   ) {
     Long userId = jwtDecoder.decode(authToken).getUserId();
 
-    return userProfileQueryClient.userProfile(userId)
+    return userProfileQueryClient.getUserProfile(userId)
         .flatMap(userProfile -> userCategoryUpsertClient.upsertUserCategory(
             UserCategoryUpsertRequest.builder()
                 .userId(userId)
