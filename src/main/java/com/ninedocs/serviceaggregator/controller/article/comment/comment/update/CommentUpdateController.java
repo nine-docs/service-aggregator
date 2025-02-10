@@ -1,14 +1,14 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.update;
+package com.ninedocs.serviceaggregator.controller.article.comment.comment.update;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.update.CommentUpdateClient;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.update.dto.CommentUpdateClientRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileQueryClient;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.LikeResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.CommentResponse.ReplyResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.update.dto.CommentUpdateRequest;
+import com.ninedocs.serviceaggregator.controller.article.comment.comment.common.dto.CommentResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.comment.common.dto.CommentResponse.LikeResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.comment.common.dto.CommentResponse.ReplyResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.comment.update.dto.CommentUpdateRequest;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.AuthorResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

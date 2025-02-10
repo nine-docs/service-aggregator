@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.common.dto;
+package com.ninedocs.serviceaggregator.controller.article.comment.common;
 
 import lombok.Builder;
 import lombok.Getter;

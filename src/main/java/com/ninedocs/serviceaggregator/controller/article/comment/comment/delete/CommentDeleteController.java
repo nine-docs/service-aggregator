@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.delete;
+package com.ninedocs.serviceaggregator.controller.article.comment.comment.delete;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.delete.CommentDeleteClient;

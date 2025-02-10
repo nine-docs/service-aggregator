@@ -1,4 +1,4 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.query;
+package com.ninedocs.serviceaggregator.controller.article.comment.reply.query;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.ReplyQueryClient;
@@ -6,8 +6,8 @@ import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto.ReplyQueryRequest;
 import com.ninedocs.serviceaggregator.client.user.profile.UserProfileBulkQueryClient;
 import com.ninedocs.serviceaggregator.client.user.profile.dto.UserProfileBulkDto;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.AuthorResponse;
-import com.ninedocs.serviceaggregator.controller.article.comment.common.dto.ReplyResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.common.AuthorResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.reply.common.dto.ReplyResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.CursorPageResponse;
 import io.swagger.v3.oas.annotations.Operation;

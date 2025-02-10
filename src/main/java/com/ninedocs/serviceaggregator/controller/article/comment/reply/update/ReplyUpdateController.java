@@ -1,10 +1,10 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.update;
+package com.ninedocs.serviceaggregator.controller.article.comment.reply.update;
 
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.update.ReplyUpdateClient;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.update.dto.ReplyUpdateClientRequest;
-import com.ninedocs.serviceaggregator.controller.article.comment.update.dto.ReplyUpdateRequest;
-import com.ninedocs.serviceaggregator.controller.article.comment.update.dto.ReplyUpdateResponse;
+import com.ninedocs.serviceaggregator.controller.article.comment.reply.update.dto.ReplyUpdateRequest;
+import com.ninedocs.serviceaggregator.controller.article.comment.reply.update.dto.ReplyUpdateResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

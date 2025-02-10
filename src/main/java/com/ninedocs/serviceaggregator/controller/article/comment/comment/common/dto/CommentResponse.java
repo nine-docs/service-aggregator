@@ -1,5 +1,6 @@
-package com.ninedocs.serviceaggregator.controller.article.comment.common.dto;
+package com.ninedocs.serviceaggregator.controller.article.comment.comment.common.dto;
 
+import com.ninedocs.serviceaggregator.controller.article.comment.common.AuthorResponse;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
