@@ -3,6 +3,7 @@ package com.ninedocs.serviceaggregator.controller.article.comment.delete;
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.delete.CommentDeleteClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+@Tag(name = "댓글/대댓글")
 @RestController
 @RequiredArgsConstructor
 public class CommentDeleteController {
