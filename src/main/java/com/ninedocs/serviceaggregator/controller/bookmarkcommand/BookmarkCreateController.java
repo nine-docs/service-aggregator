@@ -37,7 +37,7 @@ public class BookmarkCreateController {
         .map(response ->
             ResponseEntity.status(HttpStatus.CREATED.value()).body(ApiResponse.success(
                 BookmarkCreateResponse.builder()
-                    .bookmarkId(response.getId())
+                    .bookmarkId(response.getBookmarkId())
                     .articleId(request.getArticleId())
                     .build()
             )));
