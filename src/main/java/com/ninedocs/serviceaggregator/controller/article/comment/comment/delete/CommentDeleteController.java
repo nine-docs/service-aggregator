@@ -3,6 +3,7 @@ package com.ninedocs.serviceaggregator.controller.article.comment.comment.delete
 import com.ninedocs.serviceaggregator.application.auth.JwtDecoder;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.delete.CommentDeleteClient;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class CommentDeleteController {
   private final CommentDeleteClient commentDeleteClient;
 
   @DeleteMapping("/api/v1/article/{articleId}/comment/{commentId}")
+  @Operation(summary = "댓글 삭제")
   public Mono<ResponseEntity<ApiResponse<Void>>> deleteComment(
       @PathVariable Long articleId,
       @PathVariable Long commentId,
