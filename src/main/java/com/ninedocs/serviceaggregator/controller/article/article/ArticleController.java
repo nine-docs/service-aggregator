@@ -1,6 +1,8 @@
 package com.ninedocs.serviceaggregator.controller.article.article;
 
 import com.ninedocs.serviceaggregator.client.article.articlequery.ArticleQueryClient;
+import com.ninedocs.serviceaggregator.controller.article.article.dto.ArticleQueryResponse;
+import com.ninedocs.serviceaggregator.controller.article.article.dto.ArticleQueryResponse.CategoryResponse;
 import com.ninedocs.serviceaggregator.controller.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,12 +22,19 @@ public class ArticleController {
 
   @Operation(summary = "문제 본문 조회")
   @GetMapping("/api/v1/article/{articleId}")
-  public Mono<ResponseEntity<ApiResponse<String>>> getArticle(
+  public Mono<ResponseEntity<ApiResponse<ArticleQueryResponse>>> getArticle(
       @PathVariable("articleId") Long articleId
   ) {
     return articleQueryClient.getArticle(articleId)
         .map(article -> ResponseEntity.ok(ApiResponse.success(
-            article.getContents()
+            ArticleQueryResponse.builder()
+                .title(article.getTitle())
+                .contents(article.getContents())
+                .category(CategoryResponse.builder()
+                    .id(1L)
+                    .title("카테고리 제목 임시")
+                    .build())
+                .build()
         )));
   }
 }
