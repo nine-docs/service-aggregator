@@ -4,6 +4,7 @@ import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.like.dto.CommentLikeClientRequest;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.like.dto.CommentLikeClientResponse;
+import com.ninedocs.serviceaggregator.client.subcontents.comment.comment.like.exception.CommentAlreadyLikedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class CommentLikeClient {
   private final WebClient subContentsWebClient;
 
   public Mono<CommentLikeClientResponse> like(CommentLikeClientRequest request) {
-    return subContentsWebClient.put()
+    return subContentsWebClient.post()
         .uri(uriBuilder -> uriBuilder
             .path(URI_PATH)
             .build())
@@ -32,6 +33,9 @@ public class CommentLikeClient {
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<CommentLikeClientResponse>>() {
         })
         .flatMap(domainResponse -> {
+          if ("이미 추천한 댓글입니다.".equals(domainResponse.getErrorCode())) {
+            return Mono.error(new CommentAlreadyLikedException());
+          }
           if (!domainResponse.getSuccess()) {
             return Mono.error(
                 new Unknown2xxErrorException(DOMAIN_NAME, URI_PATH, domainResponse.getErrorCode())
