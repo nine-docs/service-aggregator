@@ -1,13 +1,15 @@
 package com.ninedocs.serviceaggregator.client.article.articlequery.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 
 @Getter
-public class ArticleQueryResponse {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ArticleQueryClientResponse {
 
   private Long id;
   private String title;
   private String contents;
   private String link;
-  private Long categoryId;
+  // Todo Category
 }

@@ -1,6 +1,6 @@
 package com.ninedocs.serviceaggregator.client.article.articlequery;
 
-import com.ninedocs.serviceaggregator.client.article.articlequery.dto.ArticleQueryResponse;
+import com.ninedocs.serviceaggregator.client.article.articlequery.dto.ArticleQueryClientResponse;
 import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,14 @@ public class ArticleQueryClient {
 
   private final WebClient articleWebClient;
 
-  public Mono<ArticleQueryResponse> getArticle(Long articleId) {
+  public Mono<ArticleQueryClientResponse> getArticle(Long articleId) {
     final String uriPath = "/api/v1/article/article/" + articleId + "/";
 
     return articleWebClient.get()
         .uri(uriPath)
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(new ParameterizedTypeReference<DomainResponse<ArticleQueryResponse>>() {
+        .bodyToMono(new ParameterizedTypeReference<DomainResponse<ArticleQueryClientResponse>>() {
         })
         .flatMap(domainResponse -> {
           if (!domainResponse.getSuccess()) {
