@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Tag(name = "문제페이지")
+@Tag(name = "북마크")
 @RestController
 @RequiredArgsConstructor
 public class ArticleBookmarkController {
