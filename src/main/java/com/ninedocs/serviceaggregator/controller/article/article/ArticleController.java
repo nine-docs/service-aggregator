@@ -29,7 +29,7 @@ public class ArticleController {
         .map(article -> ResponseEntity.ok(ApiResponse.success(
             ArticleQueryResponse.builder()
                 .title(article.getTitle())
-                .contents(article.getContents())
+                .contents(article.getContent())
                 .category(CategoryResponse.builder()
                     .id(1L)
                     .title("카테고리 제목 임시")
