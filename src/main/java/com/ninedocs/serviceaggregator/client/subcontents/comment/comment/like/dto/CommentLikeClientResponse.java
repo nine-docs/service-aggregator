@@ -18,7 +18,7 @@ public class CommentLikeClientResponse {
   @Getter
   public static class ReplyResponse {
 
-    private int countId;
+    private int count;
   }
 
   @Getter

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "문제페이지")
+@Tag(name = "본문 조회")
 @RestController
 @RequiredArgsConstructor
 public class ArticleController {
@@ -31,8 +31,8 @@ public class ArticleController {
                 .title(article.getTitle())
                 .contents(article.getContent())
                 .category(CategoryResponse.builder()
-                    .id(1L)
-                    .title("카테고리 제목 임시")
+                    .id(article.getCategory().getId())
+                    .title(article.getCategory().getName())
                     .build())
                 .build()
         )));

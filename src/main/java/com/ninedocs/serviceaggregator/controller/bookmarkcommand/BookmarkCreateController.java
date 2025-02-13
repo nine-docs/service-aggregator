@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "북마크 생성/삭제")
+@Tag(name = "북마크")
 @RequiredArgsConstructor
 @RestController
 public class BookmarkCreateController {

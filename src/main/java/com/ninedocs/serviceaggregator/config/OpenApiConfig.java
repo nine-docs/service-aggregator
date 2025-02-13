@@ -48,7 +48,7 @@ public class OpenApiConfig {
   public GroupedOpenApi articleGroupedOpenApi() {
     return GroupedOpenApi.builder()
         .group("(d) 문제페이지")
-        .pathsToMatch("/api/v1/article/**")
+        .pathsToMatch("/api/v1/article/**", "/api/v1/bookmark/**")
         .build();
   }
 
@@ -56,7 +56,7 @@ public class OpenApiConfig {
   public GroupedOpenApi bookmarkGroupedOpenApi() {
     return GroupedOpenApi.builder()
         .group("(e) 북마크")
-        .pathsToMatch("/api/v1/bookmark/**")
+        .pathsToMatch("/api/v1/bookmark/**", "/api/v1/article/*/bookmark")
         .build();
   }
 
