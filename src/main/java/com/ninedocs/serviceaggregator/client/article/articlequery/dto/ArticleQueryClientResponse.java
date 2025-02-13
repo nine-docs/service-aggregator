@@ -11,5 +11,13 @@ public class ArticleQueryClientResponse {
   private String title;
   private String content;
   private String link;
-  // Todo Category
+  private CategoryClientResponse category;
+
+  @Getter
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class CategoryClientResponse {
+
+    private Long id;
+    private String name;
+  }
 }

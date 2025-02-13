@@ -31,8 +31,8 @@ public class ArticleController {
                 .title(article.getTitle())
                 .contents(article.getContent())
                 .category(CategoryResponse.builder()
-                    .id(1L)
-                    .title("카테고리 제목 임시")
+                    .id(article.getCategory().getId())
+                    .title(article.getCategory().getName())
                     .build())
                 .build()
         )));
