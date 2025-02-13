@@ -9,7 +9,7 @@ public class ArticleQueryClientResponse {
 
   private Long id;
   private String title;
-  private String contents;
+  private String content;
   private String link;
   // Todo Category
 }
