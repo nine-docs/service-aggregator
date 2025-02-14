@@ -16,7 +16,11 @@ public class CorsFilter {
     corsConfig.setAllowCredentials(true);
     corsConfig.addAllowedHeader("*");
     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+    corsConfig.setAllowedOrigins(List.of(
+        "https://ninedocs.org",
+        "https://www.ninedocs.org",
+        "http://localhost:3000"
+    ));
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfig);
