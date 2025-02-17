@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AllSchedulesQueryController {
 
-  @Operation(summary = "메일 수신 주기 전체 목록 조회 Mock")
+  @Operation(summary = "메일 수신 주기 전체 목록 조회")
   @GetMapping("/api/v1/my-page/subscription/available-schedules")
   public Mono<ResponseEntity<ApiResponse<AllSchedulesResponse>>> getAvailableSchedules() {
     return Mono.just(ResponseEntity.ok(ApiResponse.success(
