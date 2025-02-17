@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "댓글/대댓글")
+@Tag(name = "대댓글")
 @RestController
 @RequiredArgsConstructor
 public class ReplyQueryController {

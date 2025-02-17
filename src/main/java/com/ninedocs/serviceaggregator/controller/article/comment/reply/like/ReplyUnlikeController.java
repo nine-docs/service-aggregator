@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Tag(name = "댓글/대댓글")
+@Tag(name = "대댓글")
 @RestController
 @RequiredArgsConstructor
 public class ReplyUnlikeController {
