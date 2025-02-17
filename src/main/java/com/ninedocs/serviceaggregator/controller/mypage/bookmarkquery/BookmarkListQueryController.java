@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Tag(name = "북마크 목록 조회")
+@Tag(name = "북마크")
 @RestController
 @RequiredArgsConstructor
 public class BookmarkListQueryController {

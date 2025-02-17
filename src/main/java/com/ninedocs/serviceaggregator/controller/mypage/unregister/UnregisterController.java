@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "My Page")
+@Tag(name = "프로필")
 @RestController
 @RequiredArgsConstructor
 public class UnregisterController {
