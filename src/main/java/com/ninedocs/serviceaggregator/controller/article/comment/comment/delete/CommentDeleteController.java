@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "댓글/대댓글")
+@Tag(name = "댓글")
 @RestController
 @RequiredArgsConstructor
 public class CommentDeleteController {
