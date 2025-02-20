@@ -51,6 +51,7 @@ public class ReplyQueryController {
                 .commentId(commentId)
                 .cursor(cursor == null ? 0L : cursor)
                 .limit(limit)
+                .userId(userId)
                 .build()
         )
         .flatMap(replyCursorResponse -> {

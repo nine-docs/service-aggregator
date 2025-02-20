@@ -27,6 +27,7 @@ public class ReplyQueryClient {
             .queryParam("commentId", request.getCommentId())
             .queryParam("cursor", request.getCursor())
             .queryParam("limit", request.getLimit())
+            .queryParam("userId", request.getUserId())
             .build())
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()

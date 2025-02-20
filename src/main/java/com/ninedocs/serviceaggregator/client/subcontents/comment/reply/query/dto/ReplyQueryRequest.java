@@ -10,4 +10,5 @@ public class ReplyQueryRequest {
   private Long commentId;
   private Long cursor;
   private int limit;
+  private Long userId;
 }
