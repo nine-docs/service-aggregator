@@ -7,7 +7,16 @@ import lombok.Getter;
 public class ReplyUpdateClientResponse {
 
   private Long replyId;
+  private Long authorId;
   private String content;
+  private LikeResponse like;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+
+  @Getter
+  public static class LikeResponse {
+
+    private Integer count;
+    private Boolean isUserLike;
+  }
 }
