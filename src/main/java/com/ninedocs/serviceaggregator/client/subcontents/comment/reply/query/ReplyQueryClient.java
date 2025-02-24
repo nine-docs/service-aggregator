@@ -4,6 +4,7 @@ import com.ninedocs.serviceaggregator.client.common.dto.DomainResponse;
 import com.ninedocs.serviceaggregator.client.common.error.Unknown2xxErrorException;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto.ReplyCursorResponse;
 import com.ninedocs.serviceaggregator.client.subcontents.comment.reply.query.dto.ReplyQueryRequest;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -22,13 +23,18 @@ public class ReplyQueryClient {
 
   public Mono<ReplyCursorResponse> getReplies(ReplyQueryRequest request) {
     return subContentsWebClient.get()
-        .uri(uriBuilder -> uriBuilder
-            .path(URI_PATH)
-            .queryParam("commentId", request.getCommentId())
-            .queryParam("cursor", request.getCursor())
-            .queryParam("limit", request.getLimit())
-            .queryParam("userId", request.getUserId())
-            .build())
+        .uri(uriBuilder -> {
+              uriBuilder = uriBuilder
+                  .path(URI_PATH)
+                  .queryParam("commentId", request.getCommentId())
+                  .queryParam("cursor", request.getCursor())
+                  .queryParam("limit", request.getLimit());
+              if (Objects.nonNull(request.getUserId())) {
+                uriBuilder = uriBuilder.queryParam("userId", request.getUserId());
+              }
+              return uriBuilder.build();
+            }
+        )
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .bodyToMono(new ParameterizedTypeReference<DomainResponse<ReplyCursorResponse>>() {
